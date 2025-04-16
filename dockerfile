@@ -24,9 +24,8 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/.env ./.env # 필요한 경우에만
 
 # 포트 설정 (필요한 경우)
 EXPOSE 3000
 
-CMD ["node", "dist/server.js"]
+CMD ["npm", "run", "start"]
