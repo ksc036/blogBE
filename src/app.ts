@@ -7,5 +7,5 @@ const app = express();
 app.use(express.json());
 app.use(scopePerRequest(container));
 app.use("/users", userRouter);
-
+// app.use("/posts", postRouter);
 export default app;

@@ -1,12 +1,16 @@
+import { TYPES } from "../di/types";
 import { UserRepository } from "./user.repository";
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
-  private users = [
-    { id: 1, name: "Alice" },
-    { id: 2, name: "Bob" },
-  ];
+  private userRepository: UserRepository;
+  constructor({
+    [TYPES.UserRepository]: userRepository,
+  }: {
+    [TYPES.UserRepository]: UserRepository;
+  }) {
+    this.userRepository = userRepository;
+  }
 
   getAll() {
-    return this.users;
+    return this.userRepository.findAll();
   }
 }

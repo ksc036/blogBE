@@ -1,8 +1,7 @@
 import express from "express";
-import { scopePerRequest, makeInvoker } from "awilix-express"; // 🔥 추가
+import { makeInvoker } from "awilix-express"; // 🔥 추가
 import { userController } from "../users/user.controller";
 import container from "../di/container"; // 🔥 추가
-import { getUsers } from "../users/user.controller";
 
 const router = express.Router();
 const api = makeInvoker(userController);

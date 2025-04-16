@@ -2,8 +2,9 @@
 import { PrismaClient, User } from "@prisma/client";
 
 export class UserRepository {
+  private prisma: PrismaClient;
   // constructor(private readonly prisma = new PrismaClient()) {}
-  constructor(private readonly prisma: PrismaClient) {
+  constructor({ prisma }: { prisma: PrismaClient }) {
     this.prisma = prisma;
   }
 
