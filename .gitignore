@@ -1,0 +1,30 @@
+# Node.js 패키지
+node_modules/
+package-lock.json
+# 환경변수 (비밀번호, API 키 등 포함)
+.env
+.env.*
+
+# TypeScript 빌드 결과물
+dist/
+build/
+
+# 시스템 관련 파일
+.DS_Store
+Thumbs.db
+
+# IDE 관련 파일
+.vscode/
+.idea/
+
+# 로그
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 테스트 커버리지
+coverage/
+
+# OS별 캐시
+*.log
+/src/generated/
