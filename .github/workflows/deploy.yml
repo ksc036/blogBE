@@ -1,0 +1,17 @@
+name: Tag Push Test
+
+on:
+  push:
+    tags:
+      - 'v*'  # 예: v1.0.0, v0.1.2 등
+
+jobs:
+  print-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Print Tag Name
+        run: echo "🔥 태그가 감지되었습니다: ${{ github.ref }}"
