@@ -3,7 +3,8 @@ name: Build and Push Docker Image
 on:
   push:
     tags:
-      - "v*" # 예: v1.0.0 같은 태그 push 시 작동
+      - "dev-*"
+      - "prod-*"
 
 jobs:
   docker-build-and-push:
