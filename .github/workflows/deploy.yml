@@ -34,5 +34,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ksc/blog-backend:${{ env.TAG }}
-            ksc/blog-backend:latest
+            ksc036/blog-backend:${{ env.TAG }}
+            ksc036/blog-backend:latest
