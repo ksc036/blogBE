@@ -1,6 +1,6 @@
 import { createContainer, asClass, asValue } from "awilix";
 import { TYPES } from "./types";
-import prisma from "../prisma/client.js";
+import prisma from "../prisma/client";
 import { UserService } from "../users/user.service";
 import { UserRepository } from "../users/user.repository";
 
