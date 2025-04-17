@@ -72,6 +72,8 @@ jobs:
 
       - name: Update values.yaml
         run: |
+          echo "${ENV_DIR} env dir"
+          ls -al
           sed -i "s/\(image: .*:\).*/\1${GIT_TAG}/" namespaces/${ENV_DIR}/bolg/be/deployment.yaml
 
       - name: Commit and Push to GitOps Repo
@@ -79,7 +81,7 @@ jobs:
           cd gitops
           git config user.name "github-actions"
           git config user.email "ksc036@gmail.com"
-          git commit -am "Update ${ENV_DIR} to ${GIT_TAG}"
+          git commit -am "Update ${ENV_DIR} blog be to ${GIT_TAG}"
           git push
   argocd-deploy:
     runs-on: ubuntu-latest
