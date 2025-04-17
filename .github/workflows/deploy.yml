@@ -71,6 +71,8 @@ jobs:
           fi
 
       - name: Update values.yaml
+        env:
+          GIT_TAG: ${{ needs.docker-build-and-push.outputs.tag }}
         run: |
           ls -al
           sed -i "s/\(image: .*:\).*/\1${GIT_TAG}/" namespaces/${ENV_DIR}/blog/be/deployment.yaml
