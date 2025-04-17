@@ -56,11 +56,11 @@ jobs:
         id: set-envdir
         run: |
           echo "GIT_TAG=${{ needs.docker-build-and-push.outputs.tag }}" >> $GITHUB_ENV
-          if [[ "${GIT_TAG}" == dev-v* ]]; then
+          if [[ ${GIT_TAG} == dev-v* ]]; then
             echo "ENV_DIR=dev" >> $GITHUB_ENV
             echo "env_dir=dev" >> $GITHUB_OUTPUT
             echo "APP_VERSION=${GIT_TAG#dev-}" >> $GITHUB_ENV
-          elif [[ "${GIT_TAG}" == prod-v* ]]; then
+          elif [[ ${GIT_TAG} == prod-v* ]]; then
             echo "ENV_DIR=prod" >> $GITHUB_ENV
             echo "env_dir=prod" >> $GITHUB_OUTPUT
             echo "APP_VERSION=${GIT_TAG#prod-}" >> $GITHUB_ENV
