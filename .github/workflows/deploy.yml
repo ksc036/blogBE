@@ -37,3 +37,24 @@ jobs:
           tags: |
             ksc036/blog-backend:${{ env.TAG }}
             ksc036/blog-backend:latest
+  argocd-deploy:
+    runs-on: ubuntu-latest
+    needs: docker-build-and-push
+    environment: argocd
+    steps:
+      - name: Install Argo CD CLI
+        run: |
+          curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+          chmod +x argocd
+          sudo mv argocd /usr/local/bin/
+
+      - name: Login to Argo CD
+        run: |
+          argocd login argocd.ksc036.store \
+            --username ${{ secrets.ARGOCD_USERNAME }} \
+            --password ${{ secrets.ARGOCD_PASSWORD }} \
+
+      - name: Sync application
+        run: |
+          echo "=== Current app list ==="
+          argocd app list
