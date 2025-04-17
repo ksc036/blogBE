@@ -72,9 +72,8 @@ jobs:
 
       - name: Update values.yaml
         run: |
-          echo "${ENV_DIR} env dir"
           ls -al
-          sed -i "s/\(image: .*:\).*/\1${GIT_TAG}/" namespaces/${ENV_DIR}/bolg/be/deployment.yaml
+          sed -i "s/\(image: .*:\).*/\1${GIT_TAG}/" namespaces/${ENV_DIR}/blog/be/deployment.yaml
 
       - name: Commit and Push to GitOps Repo
         run: |
