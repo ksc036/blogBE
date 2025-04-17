@@ -10,7 +10,8 @@ jobs:
   docker-build-and-push:
     runs-on: ubuntu-latest
     environment: docker
-
+    outputs:
+      tag: ${{ steps.extract_tag.outputs.TAG }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -26,7 +27,9 @@ jobs:
 
       - name: Extract tag version
         id: extract_tag
-        run: echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+        run: |
+          echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -41,6 +44,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: git
     needs: docker-build-and-push
+    outputs:
+      dir: ${{ steps.set-envdir.outputs.env_dir }}
     steps:
       - name: Checkout GitOps Repo
         uses: actions/checkout@v3
@@ -48,8 +53,9 @@ jobs:
           repository: ksc036/gitops-repo
           token: ${{ secrets.GITOPS_TOKEN }}
       - name: Set Variables from Tag
+        id: set-envdir
         run: |
-          echo "GIT_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          echo "GIT_TAG=${{ needs.docker-build-and-push.outputs.tag }}" >> $GITHUB_ENV
           if [[ "${GIT_TAG}" == dev-v* ]]; then
             echo "ENV_DIR=dev" >> $GITHUB_ENV
             echo "env_dir=dev" >> $GITHUB_OUTPUT
@@ -92,7 +98,7 @@ jobs:
 
       - name: Sync application
         run: |
-          echo "ENV_DIR is ${{ needs.gitops-update.outputs.env_dir }}"
+          echo "ENV_DIR is ${{ needs.gitops-update.outputs.dir }}"
           echo "=== Current app list ==="
           argocd app list
-          argocd app sync argocd/${{ needs.gitops-update.outputs.env_dir }}-app
+          argocd app sync argocd/${{ needs.gitops-update.outputs.dir }}-app
