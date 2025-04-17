@@ -77,7 +77,6 @@ jobs:
 
       - name: Commit and Push to GitOps Repo
         run: |
-          cd gitops
           git config user.name "github-actions"
           git config user.email "ksc036@gmail.com"
           git commit -am "Update ${ENV_DIR} blog be to ${GIT_TAG}"
