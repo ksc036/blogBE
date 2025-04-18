@@ -4,6 +4,7 @@ import prisma from "../prisma/client";
 import { UserService } from "../users/user.service";
 import { UserRepository } from "../users/user.repository";
 import { PostRepository } from "../posts/post.repository";
+import { PostService } from "../posts/post.service";
 
 const container = createContainer();
 
@@ -11,7 +12,7 @@ container.register({
   prisma: asValue(prisma),
   [TYPES.UserService]: asClass(UserService).scoped(),
   [TYPES.UserRepository]: asClass(UserRepository).scoped(),
-  // [TYPES.PostService]: asClass(PostService).scoped(),
+  [TYPES.PostService]: asClass(PostService).scoped(),
   [TYPES.PostRepository]: asClass(PostRepository).scoped(),
 });
 
