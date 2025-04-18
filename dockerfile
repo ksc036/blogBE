@@ -12,7 +12,6 @@ COPY prisma ./prisma
 COPY src ./src
 COPY tsconfig.json ./
 RUN npx prisma generate
-RUN npx prisma migrate dev --name init
 RUN npm run build
 
 # ✅ 2단계: 실행 스테이지
