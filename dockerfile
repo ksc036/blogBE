@@ -12,6 +12,7 @@ COPY prisma ./prisma
 COPY src ./src
 COPY tsconfig.json ./
 RUN npx prisma generate
+RUN npx prisma migrate dev --name init
 RUN npm run build
 
 # ✅ 2단계: 실행 스테이지
@@ -22,6 +23,7 @@ WORKDIR /app
 # 실행에 필요한 것만 복사
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
+
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
 
