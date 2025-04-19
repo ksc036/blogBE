@@ -31,15 +31,33 @@ jobs:
           echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
           echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
 
-      - name: Build and push Docker image
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: .
+      #     file: ./Dockerfile
+      #     push: true
+      #     tags: |
+      #       ksc036/blog-backend:${{ env.TAG }}
+      #       ksc036/blog-backend:latest
+      - name: Build and push (dev)
+        if: startsWith(github.ref, 'refs/tags/dev-')
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
+          file: ./dockerfile.dev
           push: true
           tags: |
             ksc036/blog-backend:${{ env.TAG }}
-            ksc036/blog-backend:latest
+      - name: Build and push (prod)
+        if: startsWith(github.ref, 'refs/tags/prod-')
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./dockerfile.prod
+          push: true
+          tags: |
+            ksc036/blog-backend:${{ env.TAG }}
   gitops-update:
     runs-on: ubuntu-latest
     environment: git
