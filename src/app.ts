@@ -19,7 +19,7 @@ app.use(express.json());
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION!,
-  endpoint: process.env.S3_URL!, // ✅ MinIO 주소
+  endpoint: "https://minio.ksc036.store", // ✅ MinIO 주소
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
