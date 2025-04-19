@@ -53,8 +53,10 @@ app.post("/presign", async (req: Request, res: Response) => {
 
   try {
     const url = await getSignedUrl(s3, command, { expiresIn: 300 });
+    console.log("Presigned URL:", url);
     const { pathname, search } = new URL(url);
-    res.json({ search });
+    const pathAndQuery = pathname + search;
+    res.json({ url: pathAndQuery });
   } catch (err) {
     console.error("Presign Error:", err);
     res.status(500).json({ error: "Failed to generate presigned URL" });
