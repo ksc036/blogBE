@@ -14,6 +14,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 dotenv.config();
 const app = express();
 app.use(cors());
+app.options("*", cors());
 app.use(express.json());
 
 const s3 = new S3Client({
