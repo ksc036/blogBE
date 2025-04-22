@@ -8,6 +8,7 @@ export const postController = ({
   [TYPES.PostService]: PostService;
 }) => ({
   createPost: async (req: Request, res: Response) => {
+    console.log("createPost called ", req.body);
     try {
       const { title, content, thumbnailUrl, desc, visibility, postUrl } =
         req.body;
