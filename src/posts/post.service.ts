@@ -27,4 +27,7 @@ export class PostService {
   async getAllPosts() {
     return this.postRepository.findAllPosts();
   }
+  async getPost(id: number) {
+    return this.postRepository.findPost(id);
+  }
 }

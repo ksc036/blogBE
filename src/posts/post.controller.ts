@@ -31,7 +31,7 @@ export const postController = ({
   },
   getPost: async (req: Request, res: Response) => {
     const { id } = req.params;
-    const posts = await postService.getAllPosts();
+    const posts = await postService.getPost(Number(id));
     res.json(posts);
   },
   updatePost: async (req: Request, res: Response) => {

@@ -21,4 +21,10 @@ export class PostRepository {
   async findAllPosts() {
     return this.prisma.post.findMany();
   }
+
+  async findPost(id: number) {
+    return this.prisma.post.findUnique({
+      where: { id },
+    });
+  }
 }
