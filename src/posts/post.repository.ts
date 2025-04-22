@@ -50,8 +50,9 @@ export class PostRepository {
   }) {
     const { id, title, content, thumbnailUrl, desc, visibility, postUrl } =
       data;
+    console.log("repo" + id);
 
-    this.prisma.post.update({
+    return this.prisma.post.update({
       where: { id },
       data: {
         title,

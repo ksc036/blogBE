@@ -40,7 +40,8 @@ export class PostService {
     return this.postRepository.findPost(id);
   }
   async updatePost(data: UpdatePostDTO) {
-    this.postRepository.updatePost(data);
+    console.log("service" + data.id);
+    return this.postRepository.updatePost(data);
   }
   async deletePost(id: number) {
     this.postRepository.deletePost(id);

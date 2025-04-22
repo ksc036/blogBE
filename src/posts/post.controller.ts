@@ -40,7 +40,7 @@ export const postController = ({
     try {
       const { title, content, thumbnailUrl, desc, visibility, postUrl } =
         req.body;
-      await postService.updatePost({
+      const post = await postService.updatePost({
         id: Number(id),
         title,
         content,
@@ -49,7 +49,8 @@ export const postController = ({
         visibility,
         postUrl,
       });
-      res.status(201);
+      console.log("post", post);
+      res.status(201).json({ post });
     } catch (error) {
       res.status(500).json({ error: "게시글 작성중 문제 발생" });
     }
