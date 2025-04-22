@@ -20,7 +20,7 @@ export const postController = ({
         visibility,
         postUrl,
       });
-      res.status(201).json(postId);
+      res.status(201).json({ postId });
     } catch (error) {
       res.status(500).json({ error: "게시글 작성중 문제 발생" });
     }
