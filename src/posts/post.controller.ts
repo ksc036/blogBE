@@ -12,7 +12,7 @@ export const postController = ({
     try {
       const { title, content, thumbnailUrl, desc, visibility, postUrl } =
         req.body;
-      const post = await postService.createPost({
+      const postId = await postService.createPost({
         title,
         content,
         thumbnailUrl,
@@ -20,7 +20,7 @@ export const postController = ({
         visibility,
         postUrl,
       });
-      res.status(201).json(post);
+      res.status(201).json(postId);
     } catch (error) {
       res.status(500).json({ error: "게시글 작성중 문제 발생" });
     }

@@ -13,9 +13,12 @@ export class PostRepository {
     visibility: boolean;
     postUrl: string;
   }) {
-    return this.prisma.post.create({
+    // 자동 생성된 ID 가져오기
+    const createdPost = await this.prisma.post.create({
       data,
     });
+    const postId = createdPost.id;
+    return postId;
   }
 
   async findAllPosts() {
