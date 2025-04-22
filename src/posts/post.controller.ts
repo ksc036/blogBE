@@ -7,16 +7,37 @@ export const postController = ({
 }: {
   [TYPES.PostService]: PostService;
 }) => ({
-  writePost: async (req: Request, res: Response) => {
+  createPost: async (req: Request, res: Response) => {
     try {
-      const { title, content, author } = req.body;
-      const post = await postService.createPost({ title, content, author });
+      const { title, content, thumbnailUrl, desc, visibility, postUrl } =
+        req.body;
+      const post = await postService.createPost({
+        title,
+        content,
+        thumbnailUrl,
+        desc,
+        visibility,
+        postUrl,
+      });
       res.status(201).json(post);
     } catch (error) {
       res.status(500).json({ error: "게시글 작성중 문제 발생" });
     }
   },
-  getPosts: async (req: Request, res: Response) => {
+  getAllPosts: async (req: Request, res: Response) => {
+    const posts = await postService.getAllPosts();
+    res.json(posts);
+  },
+  getPost: async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const posts = await postService.getAllPosts();
+    res.json(posts);
+  },
+  updatePost: async (req: Request, res: Response) => {
+    const posts = await postService.getAllPosts();
+    res.json(posts);
+  },
+  deletePost: async (req: Request, res: Response) => {
     const posts = await postService.getAllPosts();
     res.json(posts);
   },

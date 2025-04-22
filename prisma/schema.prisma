@@ -19,11 +19,15 @@ model User {
 }
 
 model Post {
-  id Int @id @default(autoincrement())
-  title String @db.VarChar(255)
-  viewCount Int @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  isDeleted Int @default(0)
-  content String
+  id           Int      @id @default(autoincrement())
+  title        String   // VARCHAR(255) 굳이 명시 안 해도 됨
+  content      String
+  thumbnailUrl String   // URL이라면 TEXT도 무방
+  desc         String   // 게시글 설명, TEXT 적절
+  visibility   Boolean  @default(true)
+  postUrl      String   // TEXT로도 충분 (유니크 조건 추가 추천)
+  viewCount    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  isDeleted    Boolean  @default(false) // 🔁 int 대신 boolean 추천
 }

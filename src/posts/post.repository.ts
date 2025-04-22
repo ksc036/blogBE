@@ -5,7 +5,14 @@ export class PostRepository {
   constructor({ prisma }: { prisma: any }) {
     this.prisma = prisma;
   }
-  async createPost(data: { title: string; content: string; author: string }) {
+  async createPost(data: {
+    title: string;
+    content: string;
+    thumbnailUrl: string;
+    desc: string;
+    visibility: boolean;
+    postUrl: string;
+  }) {
     return this.prisma.post.create({
       data,
     });

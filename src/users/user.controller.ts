@@ -8,6 +8,7 @@ export const userController = ({
   [TYPES.UserService]: UserService;
 }) => ({
   getUsers: async (req: Request, res: Response) => {
+    console.log("getUsers called");
     const users = await userService.getAll();
     res.json(users);
   },

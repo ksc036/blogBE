@@ -3,7 +3,10 @@ import { PostRepository } from "./post.repository";
 interface CreatePostDTO {
   title: string;
   content: string;
-  author: string;
+  thumbnailUrl: string;
+  desc: string;
+  visibility: boolean;
+  postUrl: string;
 }
 
 export class PostService {
