@@ -36,4 +36,33 @@ export class PostRepository {
       where: { id },
     });
   }
+  async updatePost(data: {
+    id: number;
+    title: string;
+    content: string;
+    thumbnailUrl: string;
+    desc: string;
+    visibility: boolean;
+    postUrl: string;
+  }) {
+    const { id, title, content, thumbnailUrl, desc, visibility, postUrl } =
+      data;
+
+    this.prisma.post.update({
+      where: { id },
+      data: {
+        title,
+        content,
+        thumbnailUrl,
+        desc,
+        visibility,
+        postUrl,
+      },
+    });
+  }
+  async deletePost(id: number) {
+    return this.prisma.post.delete({
+      where: { id },
+    });
+  }
 }

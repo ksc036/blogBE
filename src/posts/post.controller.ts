@@ -35,11 +35,28 @@ export const postController = ({
     res.json(posts);
   },
   updatePost: async (req: Request, res: Response) => {
-    const posts = await postService.getAllPosts();
-    res.json(posts);
+    const { id } = req.params;
+    console.log("updatePost called ", req.body);
+    try {
+      const { title, content, thumbnailUrl, desc, visibility, postUrl } =
+        req.body;
+      await postService.updatePost({
+        id: Number(id),
+        title,
+        content,
+        thumbnailUrl,
+        desc,
+        visibility,
+        postUrl,
+      });
+      res.status(201);
+    } catch (error) {
+      res.status(500).json({ error: "게시글 작성중 문제 발생" });
+    }
   },
   deletePost: async (req: Request, res: Response) => {
-    const posts = await postService.getAllPosts();
+    const { id } = req.body;
+    const posts = await postService.deletePost();
     res.json(posts);
   },
 });

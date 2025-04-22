@@ -8,6 +8,15 @@ interface CreatePostDTO {
   visibility: boolean;
   postUrl: string;
 }
+interface UpdatePostDTO {
+  id: number;
+  title: string;
+  content: string;
+  thumbnailUrl: string;
+  desc: string;
+  visibility: boolean;
+  postUrl: string;
+}
 
 export class PostService {
   private postRepository: PostRepository;
@@ -29,5 +38,11 @@ export class PostService {
   }
   async getPost(id: number) {
     return this.postRepository.findPost(id);
+  }
+  async updatePost(data: UpdatePostDTO) {
+    this.postRepository.updatePost(data);
+  }
+  async deletePost(id: number) {
+    this.postRepository.deletePost(id);
   }
 }
