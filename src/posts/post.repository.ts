@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 export class PostRepository {
   private prisma: PrismaClient;
-  constructor({ prisma }: { prisma: any }) {
+  constructor({ prisma }: { prisma: PrismaClient }) {
     this.prisma = prisma;
   }
   async createPost(data: {

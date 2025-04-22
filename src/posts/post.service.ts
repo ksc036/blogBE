@@ -1,5 +1,5 @@
 import { PostRepository } from "./post.repository";
-
+import { TYPES } from "../di/types";
 interface CreatePostDTO {
   title: string;
   content: string;
@@ -12,7 +12,11 @@ interface CreatePostDTO {
 export class PostService {
   private postRepository: PostRepository;
 
-  constructor({ postRepository }: { postRepository: PostRepository }) {
+  constructor({
+    [TYPES.PostRepository]: postRepository,
+  }: {
+    [TYPES.PostRepository]: PostRepository;
+  }) {
     this.postRepository = postRepository;
   }
 
