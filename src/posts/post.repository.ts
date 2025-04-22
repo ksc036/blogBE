@@ -61,8 +61,11 @@ export class PostRepository {
     });
   }
   async deletePost(id: number) {
-    return this.prisma.post.delete({
+    return this.prisma.post.update({
       where: { id },
+      data: {
+        isDeleted: true,
+      },
     });
   }
 }

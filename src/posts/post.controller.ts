@@ -56,7 +56,7 @@ export const postController = ({
   },
   deletePost: async (req: Request, res: Response) => {
     const { id } = req.body;
-    const posts = await postService.deletePost();
+    const posts = await postService.deletePost(id);
     res.json(posts);
   },
 });
