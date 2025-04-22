@@ -62,7 +62,7 @@ export class PostRepository {
   }
   async deletePost(id: number) {
     return this.prisma.post.update({
-      where: { id },
+      where: { id: Number(id) },
       data: {
         isDeleted: true,
       },
