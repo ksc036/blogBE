@@ -17,12 +17,18 @@ export class PostRepository {
     const createdPost = await this.prisma.post.create({
       data,
     });
+
     const postId = createdPost.id;
+    console.log("postId", postId); // 생성된 ID 출력
     return postId;
   }
 
   async findAllPosts() {
-    return this.prisma.post.findMany();
+    return this.prisma.post.findMany({
+      orderBy: {
+        createdAt: "desc", // 생성일 기준 내림차순 정렬
+      },
+    });
   }
 
   async findPost(id: number) {
