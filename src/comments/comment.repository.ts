@@ -23,6 +23,7 @@ export class CommentRepository {
     });
   }
   async updateComment(data: UpdateCommentDTO): Promise<PrismaComment> {
+    console.log("data", data);
     return await this.prisma.comment.update({
       data: {
         content: data.content,
