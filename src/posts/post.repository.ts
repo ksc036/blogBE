@@ -38,10 +38,12 @@ export class PostRepository {
         comments: {
           where: {
             isDeleted: false, // 삭제되지 않은 댓글만 조회
+            parentId: null,
           },
           include: {
             user: true, // 댓글 작성자 정보도 포함
             replies: {
+              where: { isDeleted: false }, // 대댓글도 필터링
               include: {
                 user: true, // 대댓글 작성자도 포함
               },
