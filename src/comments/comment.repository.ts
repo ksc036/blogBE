@@ -25,8 +25,7 @@ export class CommentRepository {
   async updateComment(data: UpdateCommentDTO): Promise<PrismaComment> {
     return await this.prisma.comment.update({
       data: {
-        ...data,
-        userId: 1,
+        content: data.content,
       },
       where: {
         id: data.id,
