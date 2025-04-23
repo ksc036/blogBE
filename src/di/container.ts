@@ -5,6 +5,8 @@ import { UserService } from "../users/user.service";
 import { UserRepository } from "../users/user.repository";
 import { PostRepository } from "../posts/post.repository";
 import { PostService } from "../posts/post.service";
+import { CommentService } from "../comments/comment.service";
+import { CommentRepository } from "../comments/comment.repository";
 
 const container = createContainer();
 
@@ -14,6 +16,8 @@ container.register({
   [TYPES.UserRepository]: asClass(UserRepository).scoped(),
   [TYPES.PostService]: asClass(PostService).scoped(),
   [TYPES.PostRepository]: asClass(PostRepository).scoped(),
+  [TYPES.CommentService]: asClass(CommentService).scoped(),
+  [TYPES.CommentRepository]: asClass(CommentRepository).scoped(),
 });
 
 export default container;
