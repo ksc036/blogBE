@@ -1,6 +1,7 @@
 export interface CreateCommentDTO {
   postId: number;
   content: string;
+  parentId?: number;
 }
 
 export interface UpdateCommentDTO {

@@ -18,6 +18,7 @@ export class CommentRepository {
       data: {
         ...data,
         userId: 1, // 로그인 유저 ID 등
+        parentId: data.parentId ?? null,
       },
     });
     const postId = createdComment.id;

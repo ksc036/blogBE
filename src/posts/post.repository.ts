@@ -31,6 +31,18 @@ export class PostRepository {
   async findPost(id: number) {
     return this.prisma.post.findUnique({
       where: { id },
+      include: {
+        comments: {
+          include: {
+            user: true, // 댓글 작성자 정보도 포함
+            replies: {
+              include: {
+                user: true, // 대댓글 작성자도 포함
+              },
+            },
+          },
+        },
+      },
     });
   }
   async updatePost(data: UpdatePostDTO) {
