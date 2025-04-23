@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { TYPES } from "../di/types";
 import { PostService } from "./post.service";
+import { CreatePostDTO } from "./post.dto";
 
 export const postController = ({
   [TYPES.PostService]: postService,
@@ -10,16 +11,8 @@ export const postController = ({
   createPost: async (req: Request, res: Response) => {
     console.log("createPost called ", req.body);
     try {
-      const { title, content, thumbnailUrl, desc, visibility, postUrl } =
-        req.body;
-      const postId = await postService.createPost({
-        title,
-        content,
-        thumbnailUrl,
-        desc,
-        visibility,
-        postUrl,
-      });
+      const data: CreatePostDTO = req.body;
+      const postId = await postService.createPost(data);
       res.status(201).json({ postId });
     } catch (error) {
       res.status(500).json({ error: "게시글 작성중 문제 발생" });

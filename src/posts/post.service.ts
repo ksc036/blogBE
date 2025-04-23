@@ -1,22 +1,6 @@
 import { PostRepository } from "./post.repository";
 import { TYPES } from "../di/types";
-interface CreatePostDTO {
-  title: string;
-  content: string;
-  thumbnailUrl: string;
-  desc: string;
-  visibility: boolean;
-  postUrl: string;
-}
-interface UpdatePostDTO {
-  id: number;
-  title: string;
-  content: string;
-  thumbnailUrl: string;
-  desc: string;
-  visibility: boolean;
-  postUrl: string;
-}
+import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
 
 export class PostService {
   private postRepository: PostRepository;

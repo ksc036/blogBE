@@ -1,5 +1,9 @@
 import { TYPES } from "../di/types";
 import { CommentRepository } from "./comment.repository";
+interface CreateCommentDTO {
+  content: string;
+  postId: number;
+}
 export class CommentService {
   private commentRepository: CommentRepository;
   constructor({
@@ -10,7 +14,7 @@ export class CommentService {
     this.commentRepository = commentRepository;
   }
 
-  getAll() {
-    return this.commentRepository.findAll();
+  async createComment(data: CreateCommentDTO) {
+    return this.commentRepository.createComment(data);
   }
 }

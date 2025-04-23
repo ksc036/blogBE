@@ -3,9 +3,10 @@ import { scopePerRequest } from "awilix-express";
 import container from "./di/container";
 import userRouter from "./routes/user.route";
 import postRouter from "./routes/post.route";
+import mainRouter from "./routes/main.route";
+import commentRouter from "./routes/comment.route";
 import cors from "cors";
 import dotenv from "dotenv";
-import mainRouter from "./routes/main.route";
 
 dotenv.config();
 const app = express();
@@ -17,4 +18,5 @@ app.use(scopePerRequest(container));
 app.use("/", mainRouter);
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
+app.use("/comments", commentRouter);
 export default app;

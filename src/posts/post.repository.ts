@@ -1,18 +1,12 @@
 import { PrismaClient } from "@prisma/client";
+import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
 
 export class PostRepository {
   private prisma: PrismaClient;
   constructor({ prisma }: { prisma: PrismaClient }) {
     this.prisma = prisma;
   }
-  async createPost(data: {
-    title: string;
-    content: string;
-    thumbnailUrl: string;
-    desc: string;
-    visibility: boolean;
-    postUrl: string;
-  }) {
+  async createPost(data: CreatePostDTO) {
     // 자동 생성된 ID 가져오기
     const createdPost = await this.prisma.post.create({
       data,
@@ -39,15 +33,7 @@ export class PostRepository {
       where: { id },
     });
   }
-  async updatePost(data: {
-    id: number;
-    title: string;
-    content: string;
-    thumbnailUrl: string;
-    desc: string;
-    visibility: boolean;
-    postUrl: string;
-  }) {
+  async updatePost(data: UpdatePostDTO) {
     const { id, title, content, thumbnailUrl, desc, visibility, postUrl } =
       data;
     console.log("repo" + id);

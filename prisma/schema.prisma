@@ -31,3 +31,25 @@ model Post {
   updatedAt    DateTime @updatedAt
   isDeleted    Boolean  @default(false) // 🔁 int 대신 boolean 추천
 }
+
+model Comment {
+  id          Int       @id @default(autoincrement())
+  content     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // 관계
+  post        Post      @relation(fields: [postId], references: [id])
+  postId      Int
+
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+
+  parent      Comment?  @relation("CommentToReplies", fields: [parentId], references: [id])
+  parentId    Int?       // null이면 댓글, 있으면 대댓글
+
+  replies     Comment[] @relation("CommentToReplies") // 대댓글들
+
+  // soft delete나 상태 관리용
+  isDeleted   Boolean   @default(false)
+}

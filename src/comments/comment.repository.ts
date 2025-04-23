@@ -1,5 +1,6 @@
 // users/user.repository.ts
 import { PrismaClient, User } from "@prisma/client";
+import { CreateCommentDTO } from "./comment.dto";
 
 export class CommentRepository {
   private prisma: PrismaClient;
@@ -8,12 +9,12 @@ export class CommentRepository {
     this.prisma = prisma;
   }
 
-  async findAll(): Promise<User[]> {
-    return this.prisma.user.findMany();
-  }
-
-  async findById(id: number): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: { id } });
+  async createComment(data: CreateCommentDTO): Promise<User[]> {
+    const createdComment = await this.prisma.comment.create({
+      data,
+    });
+    const postId = createdComment.id;
+    return postId;
   }
 
   // async create(data: { name: string }): Promise<User> {
