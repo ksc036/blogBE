@@ -22,8 +22,8 @@ export class CommentRepository {
       },
     });
   }
-  async updateComment(data: UpdateCommentDTO): Promise<number> {
-    const updatedComment = await this.prisma.comment.update({
+  async updateComment(data: UpdateCommentDTO): Promise<PrismaComment> {
+    return await this.prisma.comment.update({
       data: {
         ...data,
         userId: 1,
@@ -32,8 +32,6 @@ export class CommentRepository {
         id: data.id,
       },
     });
-    const postId = updatedComment.id;
-    return postId;
   }
 
   async deleteComment(data: DeleteCommentDTO): Promise<number> {
