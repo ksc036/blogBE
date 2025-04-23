@@ -1,5 +1,5 @@
 // users/user.repository.ts
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient, User, Comment as PrismaComment } from "@prisma/client";
 import {
   CreateCommentDTO,
   DeleteCommentDTO,
@@ -13,16 +13,14 @@ export class CommentRepository {
     this.prisma = prisma;
   }
 
-  async createComment(data: CreateCommentDTO): Promise<number> {
-    const createdComment = await this.prisma.comment.create({
+  async createComment(data: CreateCommentDTO): Promise<PrismaComment> {
+    return await this.prisma.comment.create({
       data: {
         ...data,
         userId: 1, // 로그인 유저 ID 등
         parentId: data.parentId ?? null,
       },
     });
-    const postId = createdComment.id;
-    return postId;
   }
   async updateComment(data: UpdateCommentDTO): Promise<number> {
     const updatedComment = await this.prisma.comment.update({
