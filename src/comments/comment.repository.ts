@@ -1,6 +1,10 @@
 // users/user.repository.ts
 import { PrismaClient, User } from "@prisma/client";
-import { CreateCommentDTO } from "./comment.dto";
+import {
+  CreateCommentDTO,
+  DeleteCommentDTO,
+  UpdateCommentDTO,
+} from "./comment.dto";
 
 export class CommentRepository {
   private prisma: PrismaClient;
@@ -9,17 +13,42 @@ export class CommentRepository {
     this.prisma = prisma;
   }
 
-  async createComment(data: CreateCommentDTO): Promise<User[]> {
+  async createComment(data: CreateCommentDTO): Promise<number> {
     const createdComment = await this.prisma.comment.create({
-      data,
+      data: {
+        ...data,
+        userId: 1, // 로그인 유저 ID 등
+      },
     });
     const postId = createdComment.id;
     return postId;
   }
+  async updateComment(data: UpdateCommentDTO): Promise<number> {
+    const updatedComment = await this.prisma.comment.update({
+      data: {
+        ...data,
+        userId: 1,
+      },
+      where: {
+        id: data.id,
+      },
+    });
+    const postId = updatedComment.id;
+    return postId;
+  }
 
-  // async create(data: { name: string }): Promise<User> {
-  //   return this.prisma.user.create({ data });
-  // }
+  async deleteComment(data: DeleteCommentDTO): Promise<number> {
+    const deletedComment = await this.prisma.comment.update({
+      data: {
+        isDeleted: true,
+      },
+      where: {
+        id: data.id,
+      },
+    });
+    const postId = deletedComment.id;
+    return postId;
+  }
 
   // async update(id: number, data: Partial<User>): Promise<User | null> {
   //   return this.prisma.user.update({ where: { id }, data });
