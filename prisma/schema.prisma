@@ -14,42 +14,44 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String
+  id       Int       @id @default(autoincrement())
+  name     String
+  comments Comment[]
 }
 
 model Post {
-  id           Int      @id @default(autoincrement())
-  title        String   // VARCHAR(255) 굳이 명시 안 해도 됨
+  id           Int       @id @default(autoincrement())
+  title        String // VARCHAR(255) 굳이 명시 안 해도 됨
   content      String
-  thumbnailUrl String   // URL이라면 TEXT도 무방
-  desc         String   // 게시글 설명, TEXT 적절
-  visibility   Boolean  @default(true)
-  postUrl      String   // TEXT로도 충분 (유니크 조건 추가 추천)
-  viewCount    Int      @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  isDeleted    Boolean  @default(false) // 🔁 int 대신 boolean 추천
+  thumbnailUrl String // URL이라면 TEXT도 무방
+  desc         String // 게시글 설명, TEXT 적절
+  visibility   Boolean   @default(true)
+  postUrl      String // TEXT로도 충분 (유니크 조건 추가 추천)
+  viewCount    Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  isDeleted    Boolean   @default(false)
+  comments     Comment[]
 }
 
 model Comment {
-  id          Int       @id @default(autoincrement())
-  content     String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // 관계
-  post        Post      @relation(fields: [postId], references: [id])
-  postId      Int
+  post   Post @relation(fields: [postId], references: [id])
+  postId Int
 
-  user        User      @relation(fields: [userId], references: [id])
-  userId      Int
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
 
-  parent      Comment?  @relation("CommentToReplies", fields: [parentId], references: [id])
-  parentId    Int?       // null이면 댓글, 있으면 대댓글
+  parent   Comment? @relation("CommentToReplies", fields: [parentId], references: [id])
+  parentId Int? // null이면 댓글, 있으면 대댓글
 
-  replies     Comment[] @relation("CommentToReplies") // 대댓글들
+  replies Comment[] @relation("CommentToReplies") // 대댓글들
 
   // soft delete나 상태 관리용
-  isDeleted   Boolean   @default(false)
+  isDeleted Boolean @default(false)
 }
