@@ -42,14 +42,14 @@ export class PostRepository {
             parentId: null,
           },
           orderBy: {
-            createdAt: "desc", // 생성일 기준 내림차순 정렬
+            createdAt: "asc",
           },
           include: {
             user: true, // 댓글 작성자 정보도 포함
             replies: {
               where: { isDeleted: false }, // 대댓글도 필터링
               orderBy: {
-                createdAt: "desc",
+                createdAt: "asc",
               },
               include: {
                 user: true, // 대댓글 작성자도 포함
