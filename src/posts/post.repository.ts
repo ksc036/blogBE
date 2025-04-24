@@ -29,7 +29,7 @@ export class PostRepository {
   }
 
   async findPost(id: number) {
-    return this.prisma.post.findUnique({
+    return await this.prisma.post.findUnique({
       where: {
         id,
         isDeleted: false, // 삭제되지 않은 게시글만 조회
@@ -38,7 +38,7 @@ export class PostRepository {
       include: {
         comments: {
           where: {
-            isDeleted: false, // 삭제되지 않은 댓글만 조회
+            // isDeleted: false, // 삭제되지 않은 댓글만 조회
             parentId: null,
           },
           orderBy: {
@@ -65,7 +65,7 @@ export class PostRepository {
       data;
     console.log("repo" + id);
 
-    return this.prisma.post.update({
+    return await this.prisma.post.update({
       where: { id },
       data: {
         title,
@@ -78,7 +78,7 @@ export class PostRepository {
     });
   }
   async deletePost(id: number) {
-    return this.prisma.post.update({
+    return await this.prisma.post.update({
       where: { id: Number(id) },
       data: {
         isDeleted: true,

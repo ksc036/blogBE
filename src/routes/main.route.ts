@@ -10,12 +10,9 @@ import s3 from "../s3/s3Client";
 
 const router = express.Router();
 router.get("/", async (req: Request, res: Response) => {
-  try {
-    // await s3.send(new HeadBucketCommand({ Bucket: "delog" }));
-    console.log("✅ 버킷 있음");
-  } catch (err) {
-    console.log("❌ 버킷 없음", err);
-  }
+  const host = req.headers.host;
+  const subdomain = host?.split(".")[0];
+  console.log("서브도메인:", subdomain);
   res.json({ message: "application contact" });
 });
 

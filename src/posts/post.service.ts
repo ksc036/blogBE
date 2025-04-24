@@ -21,7 +21,28 @@ export class PostService {
     return this.postRepository.findAllPosts();
   }
   async getPost(id: number) {
-    return this.postRepository.findPost(id);
+    const post = await this.postRepository.findPost(id);
+    if (post) {
+      post.comments = post.comments
+        .filter((comment) => {
+          // 삭제된 댓글인데 replies가 없는 경우는 제거
+          if (comment.isDeleted && comment.replies.length === 0) {
+            return false;
+          }
+          return true;
+        })
+        .map((comment) => {
+          if (comment.isDeleted && comment.replies.length > 0) {
+            return {
+              ...comment,
+              content: "삭제된 메시지입니다",
+            };
+          }
+          return comment;
+        });
+    }
+
+    return post;
   }
   async updatePost(data: UpdatePostDTO) {
     console.log("service" + data.id);
