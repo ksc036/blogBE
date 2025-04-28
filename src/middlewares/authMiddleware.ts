@@ -1,24 +1,31 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction } from "express";
 import { verifyToken } from "../utils/jwt";
-
+interface AuthenticatedRequest extends Request {
+  cookies: {
+    token?: string;
+    [key: string]: any;
+  };
+  user?: any; // 나중에 req.user 도 확장
+}
 export const authenticate = (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
-
+  const token = req.cookies.token;
   if (!token) {
-    // JWT가 없으면 로그인 풀린 상태
-    return res.status(401).json({ message: "Unauthorized" });
+    // next(error);
+    next(new Error("Unauthorized"));
+    console.log("인증 실패: 토큰이 없습니다.");
+    return;
   }
 
   try {
     const decoded = verifyToken(token);
-    req.user = decoded; // 로그인된 사용자 정보 저장
+    req.user = decoded;
     next();
   } catch (error) {
     console.error("JWT 인증 실패:", error);
-    return res.status(401).json({ message: "Invalid token" });
+    next(error);
   }
 };

@@ -1,11 +1,12 @@
 import express from "express";
 import { makeInvoker } from "awilix-express"; // 🔥 추가
 import { postController } from "../posts/post.controller";
+import { authenticate } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 const api = makeInvoker(postController);
 // 1. 게시글 생성
-router.post("/", api("createPost"));
+router.post("/", authenticate, api("createPost"));
 
 // 2. 게시글 목록 조회
 router.get("/", api("getAllPosts"));
