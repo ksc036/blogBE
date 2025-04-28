@@ -1,6 +1,6 @@
 import express from "express";
 import { makeInvoker } from "awilix-express";
-import { commentController } from "../comments/comment.controller";
+import { commentController } from "./comment.controller";
 
 const router = express.Router();
 const api = makeInvoker(commentController);

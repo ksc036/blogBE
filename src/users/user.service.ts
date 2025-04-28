@@ -13,4 +13,5 @@ export class UserService {
   getAll() {
     return this.userRepository.findAll();
   }
+  getGoogleLogin() {}
 }
