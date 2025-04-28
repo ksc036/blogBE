@@ -7,6 +7,7 @@ import mainRouter from "./routes/main.route";
 import commentRouter from "./comments/comment.route";
 import cors from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
@@ -20,6 +21,7 @@ app.use(
 );
 app.options("*", cors());
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(scopePerRequest(container));
 app.use("/", mainRouter);
