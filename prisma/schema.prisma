@@ -15,9 +15,9 @@ datasource db {
 
 model User {
   id            Int       @id @default(autoincrement())
-  sub           Int       @unique
+  sub           Int?      @unique
   name          String?
-  nickname      String    @unique
+  nickname      String?    @unique
   email         String?   @unique // 선택적 (소셜 로그인만 쓰는 경우 optional)
   provider      String?             // SSO 로그인 제공자 (ex: google, github 등)
   providerId    String?             // SSO에서 제공하는 고유 ID
@@ -28,7 +28,7 @@ model User {
   role          String    @default("USER") // 기본 사용자 역할
   isDeleted     Boolean   @default(false)  // 탈퇴 여부
   createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  updatedAt     DateTime?  @updatedAt
 
   comments      Comment[]
 }
