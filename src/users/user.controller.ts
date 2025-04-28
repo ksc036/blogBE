@@ -51,7 +51,12 @@ export const userController = ({
       });
 
       // 여기서 세션 생성하거나 JWT 발급
-      res.cookie("token", token, { httpOnly: true, secure: true });
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        domain: ".ksc036.store",
+        path: "/",
+      }); // 쿠키에 JWT 저장
       res.redirect(`http://${dbUserInfo.subdomain}.ksc036.store`); // 로그인 후 프론트로 이동
     } catch (error) {
       console.error(error);
