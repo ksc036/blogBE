@@ -15,7 +15,7 @@ datasource db {
 
 model User {
   id            Int       @id @default(autoincrement())
-  sub           Int?      @unique
+  sub           String?      @unique
   name          String?
   nickname      String?    @unique
   email         String?   @unique // 선택적 (소셜 로그인만 쓰는 경우 optional)
