@@ -54,7 +54,11 @@ export const postController = ({
     res.json(posts);
   },
   getAllPostsBySubdomain: async (req: Request, res: Response) => {
-    const { subdomain } = req.params;
+    const host = req.headers.host;
+    const subdomain = host?.split(".")[0];
+    if (!subdomain) {
+      return res.status(400).json({ error: "서브도메인이 없습니다." });
+    }
     const posts = await postService.getAllPostsBySubdomain(subdomain);
     res.json(posts);
   },

@@ -55,6 +55,7 @@ export class PostService {
   }
   async getAllPostsBySubdomain(subdomain: string) {
     const userId = await this.userService.getUserIdBySubdomain(subdomain);
+    console.log("subdomain", subdomain);
     console.log("userId", userId);
     if (!userId) {
       throw new Error("해당 서브도메인에 대한 사용자가 없습니다.");
