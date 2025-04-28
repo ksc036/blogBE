@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { TYPES } from "../di/types";
 import { UserService } from "./user.service";
 import axios from "axios";
-import { generateToken } from "../utils/jwt";
+import { generateToken, verifyToken } from "../utils/jwt";
 import { DbUserInfo, SsoUserInfo } from "./types";
 
 export const userController = ({
@@ -62,5 +62,21 @@ export const userController = ({
       console.error(error);
       res.status(500).send("구글 로그인 실패");
     }
+  },
+  getMe: async (req: Request, res: Response) => {
+    const token = req.cookies.token; // 쿠키에서 JWT 가져오기
+    console.log(verifyToken(token));
+    if (!token) {
+      return res.status(401).send("Unauthorized");
+    }
+    console.log("getMe called", token);
+    res.json({ status: "ok" });
+    // try {
+    //   const userInfo = await userService.getUserInfo(token);
+    //   res.json(userInfo);
+    // } catch (error) {
+    //   console.error(error);
+    //   res.status(500).send("Failed to get user info");
+    // }
   },
 });
