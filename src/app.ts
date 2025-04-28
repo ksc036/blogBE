@@ -11,7 +11,15 @@ import dotenv from "dotenv";
 dotenv.config();
 const app = express();
 app.use(cors());
-app.options("*", cors());
+app.options(
+  "*",
+  cors({
+    origin: (origin, callback) => {
+      callback(null, origin); // 요청 들어온 origin을 그대로 허용
+    },
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use(scopePerRequest(container));
