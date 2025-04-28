@@ -61,8 +61,8 @@ export class UserService {
     }
     return user;
   }
-  async getUserInfoByToken(token: string) {
-    const userInfo = await this.userRepository.findById(payload.id);
+  async getUserInfoById(id: number) {
+    const userInfo = await this.userRepository.findById(id);
     return userInfo;
   }
 }
