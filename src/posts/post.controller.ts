@@ -11,7 +11,7 @@ export const postController = ({
   createPost: async (req: Request, res: Response) => {
     console.log("createPost called ", req.body);
     try {
-      const userId = (req.user as any).tokenPayload.id; // ✅ id 꺼내기
+      const userId = (req.tokenPayload as any).id; // ✅ id 꺼내기
 
       const data: CreatePostDTO = req.body;
       data.userId = userId;
