@@ -65,4 +65,7 @@ export class UserService {
     const userInfo = await this.userRepository.findById(id);
     return userInfo;
   }
+  async getUserIdBySubdomain(subdomain: string) {
+    return await this.userRepository.findIdBySubdomain(subdomain);
+  }
 }

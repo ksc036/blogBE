@@ -53,4 +53,9 @@ export const postController = ({
     const posts = await postService.deletePost(id);
     res.json(posts);
   },
+  getAllPostsBySubdomain: async (req: Request, res: Response) => {
+    const { subdomain } = req.params;
+    const posts = await postService.getAllPostsBySubdomain(subdomain);
+    res.json(posts);
+  },
 });

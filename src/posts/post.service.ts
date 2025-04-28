@@ -1,16 +1,18 @@
 import { PostRepository } from "./post.repository";
 import { TYPES } from "../di/types";
 import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
-
+import { UserService } from "../users/user.service";
+type PostServiceDependencies = {
+  [TYPES.PostRepository]: PostRepository;
+  [TYPES.UserService]: UserService;
+};
 export class PostService {
   private postRepository: PostRepository;
+  private userService: UserService;
 
-  constructor({
-    [TYPES.PostRepository]: postRepository,
-  }: {
-    [TYPES.PostRepository]: PostRepository;
-  }) {
-    this.postRepository = postRepository;
+  constructor(deps: PostServiceDependencies) {
+    this.postRepository = deps[TYPES.PostRepository] as PostRepository;
+    this.userService = deps[TYPES.UserService] as UserService;
   }
 
   async createPost(data: CreatePostDTO) {
@@ -50,5 +52,9 @@ export class PostService {
   }
   async deletePost(id: number) {
     this.postRepository.deletePost(id);
+  }
+  async getAllPostsBySubdomain(subdomain: string) {
+    const userId = await this.userService.getUserIdBySubdomain(subdomain);
+    return this.postRepository.findAllByUserId(userId);
   }
 }

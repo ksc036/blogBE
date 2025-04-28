@@ -22,7 +22,12 @@ export class UserRepository {
   async create(data: ssoUserInfo): Promise<User> {
     return this.prisma.user.create({ data });
   }
-
+  async findIdBySubdomain(subdomain: string): Promise<number | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { subdomain },
+    });
+    return user ? user.id : null;
+  }
   // async update(id: number, data: Partial<User>): Promise<User | null> {
   //   return this.prisma.user.update({ where: { id }, data });
   // }

@@ -85,4 +85,15 @@ export class PostRepository {
       },
     });
   }
+  async findAllByUserId(userId: number) {
+    return this.prisma.post.findMany({
+      where: {
+        userId,
+        isDeleted: false, // 삭제되지 않은 게시글만 조회
+      },
+      orderBy: {
+        createdAt: "desc", // 생성일 기준 내림차순 정렬
+      },
+    });
+  }
 }

@@ -65,17 +65,13 @@ export const userController = ({
   getMe: async (req: Request, res: Response) => {
     const token = req.cookies.token; // 쿠키에서 JWT 가져오기
     const payload = verifyToken(token); // JWT 검증
-    console.log("payload", payload);
-    console.log("getMe called", payload);
-    console.log(typeof payload);
-    console.log("payload", payload?.id);
     if (!token) {
       return res.status(401).send("Unauthorized");
     }
     console.log("getMe called", token);
     // res.json({ status: "ok" });
     try {
-      const userInfo = await userService.getUserInfoById(2);
+      const userInfo = await userService.getUserInfoById(payload.id);
       res.json(userInfo);
     } catch (error) {
       console.error(error);
