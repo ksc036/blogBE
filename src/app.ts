@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { scopePerRequest } from "awilix-express";
 import container from "./di/container";
 import userRouter from "./users/user.route";
-import postRouter from "./routes/post.route";
+import postRouter from "./posts/post.route";
 import mainRouter from "./routes/main.route";
 import commentRouter from "./comments/comment.route";
 import cors from "cors";
