@@ -26,7 +26,7 @@ export const userController = ({
       `&scope=openid%20email%20profile` +
       `&access_type=offline`;
 
-    res.redirect(redirectUrl);
+    res.json({ url: redirectUrl });
   },
   googleLogin: async (req: Request, res: Response) => {
     const code = req.query.code;
