@@ -1,7 +1,7 @@
 import axios from "axios";
 import { TYPES } from "../di/types";
 import { UserRepository } from "./user.repository";
-import { SsoUserInfo } from "./types";
+import { ssoUserInfo } from "./types";
 export class UserService {
   private userRepository: UserRepository;
   constructor({
@@ -46,7 +46,7 @@ export class UserService {
 
     return userInfo.data;
   }
-  async saveUserInfo(userInfo: SsoUserInfo) {
+  async saveUserInfo(userInfo: ssoUserInfo) {
     const { sub, email, name, provider } = userInfo;
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
@@ -60,5 +60,9 @@ export class UserService {
       });
     }
     return user;
+  }
+  async getUserInfoByToken(token: string) {
+    const userInfo = await this.userRepository.findById(payload.id);
+    return userInfo;
   }
 }

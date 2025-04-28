@@ -1,6 +1,6 @@
 // users/user.repository.ts
 import { PrismaClient, User } from "@prisma/client";
-import { SsoUserInfo } from "./types";
+import { ssoUserInfo } from "./types";
 
 export class UserRepository {
   private prisma: PrismaClient;
@@ -19,7 +19,7 @@ export class UserRepository {
   async findByEmail(email: string): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { email } });
   }
-  async create(data: SsoUserInfo): Promise<User> {
+  async create(data: ssoUserInfo): Promise<User> {
     return this.prisma.user.create({ data });
   }
 

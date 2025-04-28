@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import { TYPES } from "../di/types";
 import { UserService } from "./user.service";
-import axios from "axios";
 import { generateToken, verifyToken } from "../utils/jwt";
-import { DbUserInfo, SsoUserInfo } from "./types";
+import { dbUserInfo, ssoUserInfo, tokenPayload } from "./types";
 
 export const userController = ({
   [TYPES.UserService]: userService,
@@ -36,10 +35,10 @@ export const userController = ({
     const code = req.query.code;
 
     try {
-      const SsoUserInfo: SsoUserInfo = await userService.getGoogleUserInfo(
+      const SsoUserInfo: ssoUserInfo = await userService.getGoogleUserInfo(
         code as string
       );
-      const dbUserInfo: DbUserInfo = await userService.saveUserInfo(
+      const dbUserInfo: dbUserInfo = await userService.saveUserInfo(
         SsoUserInfo
       );
 
@@ -65,19 +64,22 @@ export const userController = ({
   },
   getMe: async (req: Request, res: Response) => {
     const token = req.cookies.token; // 쿠키에서 JWT 가져오기
-    // console.log(verifyToken(token));
+    const payload = verifyToken(token); // JWT 검증
+    console.log("payload", payload);
     console.log("getMe called", token);
+    console.log(typeof token);
+
     if (!token) {
       return res.status(401).send("Unauthorized");
     }
     console.log("getMe called", token);
     res.json({ status: "ok" });
-    // try {
-    //   const userInfo = await userService.getUserInfo(token);
-    //   res.json(userInfo);
-    // } catch (error) {
-    //   console.error(error);
-    //   res.status(500).send("Failed to get user info");
-    // }
+    try {
+      // const userInfo = await userService.getUserInfoByToken(token);
+      // res.json(userInfo);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Failed to get user info");
+    }
   },
 });
