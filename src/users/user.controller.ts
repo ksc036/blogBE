@@ -102,10 +102,12 @@ export const userController = ({
     if (!allowedFields.includes(field)) {
       return res.status(400).json({ error: "Invalid field" });
     }
-    return userService.updateUser({
+    console.log("end");
+    const user = await userService.updateUser({
       userId: req.tokenPayload.id,
       field,
       value,
     } as updateUserDto);
+    return res.status(200).json({ user });
   },
 });
