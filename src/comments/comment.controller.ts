@@ -14,6 +14,8 @@ export const commentController = ({
 }) => ({
   creaetComment: async (req: Request, res: Response) => {
     const data: CreateCommentDTO = req.body;
+    const userId = (req.tokenPayload as any).id;
+    data.userId = userId;
     const comment = await commentService.createComment(data);
     res.json(comment);
   },

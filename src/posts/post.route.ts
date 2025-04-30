@@ -14,12 +14,12 @@ router.get("/", api("getAllPosts"));
 router.get("/subdomain/:subdomain", api("getAllPostsBySubdomain"));
 
 // 3. 게시글 삭제
-router.delete("/", api("deletePost"));
+router.delete("/", authenticate, api("deletePost"));
 
 // 4. 게시글 단건 조회
 router.get("/:id", api("getPost"));
 
 // 5. 게시글 수정
-router.put("/:id", api("updatePost"));
+router.put("/:id", authenticate, api("updatePost"));
 
 export default router;
