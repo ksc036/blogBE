@@ -90,7 +90,14 @@ export const userController = ({
   },
   updateUser: async (req: Request, res: Response) => {
     const { field, value } = req.body;
-    const allowedFields = ["name", "email", "subdomain", "bio", "blogName"];
+    const allowedFields = [
+      "name",
+      "email",
+      "subdomain",
+      "bio",
+      "blogName",
+      "thumbnailUrl",
+    ];
     if (!allowedFields.includes(field)) {
       return res.status(400).json({ error: "Invalid field" });
     }
