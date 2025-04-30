@@ -17,7 +17,6 @@ export class CommentRepository {
     return await this.prisma.comment.create({
       data: {
         ...data,
-        userId: 1, // 로그인 유저 ID 등
         parentId: data.parentId ?? null,
       },
     });
