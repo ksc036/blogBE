@@ -1,7 +1,7 @@
 import axios from "axios";
 import { TYPES } from "../di/types";
 import { UserRepository } from "./user.repository";
-import { ssoUserInfo } from "./types";
+import { ssoUserInfo, updateUserDto } from "./types";
 export class UserService {
   private userRepository: UserRepository;
   constructor({
@@ -67,5 +67,8 @@ export class UserService {
   }
   async getUserIdBySubdomain(subdomain: string) {
     return await this.userRepository.findIdBySubdomain(subdomain);
+  }
+  async updateUser(data: updateUserDto) {
+    return await this.userRepository.updateUserInfo(data);
   }
 }

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { TYPES } from "../di/types";
 import { UserService } from "./user.service";
 import { generateToken, verifyToken } from "../utils/jwt";
-import { dbUserInfo, ssoUserInfo, tokenPayload } from "./types";
+import { dbUserInfo, ssoUserInfo, tokenPayload, updateUserDto } from "./types";
 import { log } from "console";
 
 export const userController = ({
@@ -87,5 +87,17 @@ export const userController = ({
       path: "/",
     });
     res.status(200).send("Logout success");
+  },
+  updateUser: async (req: Request, res: Response) => {
+    const { field, value } = req.body;
+    const allowedFields = ["name", "email", "subdomain", "bio", "blogName"];
+    if (!allowedFields.includes(field)) {
+      return res.status(400).json({ error: "Invalid field" });
+    }
+    return userService.updateUser({
+      userId: req.tokenPayload.id,
+      field,
+      value,
+    } as updateUserDto);
   },
 });

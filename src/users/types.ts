@@ -23,3 +23,9 @@ export type tokenPayload = {
   name: string;
   id: number;
 };
+
+export type updateUserDto = {
+  userId: number;
+  field: string;
+  value: string;
+};
