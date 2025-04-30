@@ -31,6 +31,7 @@ export class UserRepository {
 
   async updateUserInfo(data: updateUserDto): Promise<User> {
     const { userId, field, value } = data;
+    console.log("updateUserInfo called", data);
     return await this.prisma.user.update({
       where: { id: userId }, // 인증된 사용자 ID 사용
       data: { [field]: value }, // 동적 키 업데이트

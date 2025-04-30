@@ -90,6 +90,7 @@ export const userController = ({
   },
   updateUser: async (req: Request, res: Response) => {
     const { field, value } = req.body;
+    console.log("updateUser called", field, value);
     const allowedFields = [
       "name",
       "email",
