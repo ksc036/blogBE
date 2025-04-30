@@ -3,6 +3,7 @@ import { TYPES } from "../di/types";
 import { UserService } from "./user.service";
 import { generateToken, verifyToken } from "../utils/jwt";
 import { dbUserInfo, ssoUserInfo, tokenPayload } from "./types";
+import { log } from "console";
 
 export const userController = ({
   [TYPES.UserService]: userService,
@@ -77,5 +78,14 @@ export const userController = ({
       console.error(error);
       res.status(500).send("Failed to get user info");
     }
+  },
+  logout: async (req: Request, res: Response) => {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      domain: ".ksc036.store",
+      path: "/",
+    });
+    res.status(200).send("Logout success");
   },
 });

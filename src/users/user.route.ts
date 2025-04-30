@@ -9,5 +9,6 @@ router.get("/", api("getUsers"));
 router.get("/social/google", api("googleLoginInit")); // /users/social/google 경로 처리
 router.get("/social/google/callback", api("googleCallback")); // /users/social/google 경로 처리
 router.get("/me", api("getMe")); // /users/social/google 경로 처리
+router.post("/logout", api("logout")); // /users/social/google 경로 처리
 // router.get("/list", getUserList); // /users/list 경로 처리
 export default router;
