@@ -28,6 +28,12 @@ export class UserRepository {
     });
     return user ? user.id : null;
   }
+  async getUserInfoBySubdomain(subdomain: string): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { subdomain },
+    });
+    return user;
+  }
 
   async updateUserInfo(data: updateUserDto): Promise<User> {
     const { userId, field, value } = data;

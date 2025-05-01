@@ -5,4 +5,6 @@ export const TYPES = {
   PostRepository: Symbol.for("PostRepository"),
   CommentService: Symbol.for("CommentService"),
   CommentRepository: Symbol.for("CommentRepository"),
+  // ✅ 추가된 UseCase
+  GetUserBlogProfileUseCase: Symbol.for("GetUserBlogProfileUseCase"),
 };

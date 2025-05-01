@@ -68,6 +68,10 @@ export class UserService {
   async getUserIdBySubdomain(subdomain: string) {
     return await this.userRepository.findIdBySubdomain(subdomain);
   }
+  async getBlogProfileBySubdomain(subdomain: string) {
+    console.log("service");
+    return await this.userRepository.getUserInfoBySubdomain(subdomain);
+  }
   async updateUser(data: updateUserDto) {
     return await this.userRepository.updateUserInfo(data);
   }

@@ -62,4 +62,8 @@ export class PostService {
     }
     return this.postRepository.findAllByUserId(userId);
   }
+  async getBlogPostByuserId(userId: number) {
+    console.log(userId);
+    return this.postRepository.getBlogPostByuserId(userId);
+  }
 }
