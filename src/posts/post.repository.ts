@@ -60,6 +60,7 @@ export class PostRepository {
             },
           },
         },
+        user: true,
       },
     });
   }
