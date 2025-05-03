@@ -2,6 +2,7 @@ import express from "express";
 import { makeInvoker } from "awilix-express"; // 🔥 추가
 import { postController } from "../posts/post.controller";
 import { authenticate } from "../middlewares/authMiddleware";
+import { tokenSetting } from "../middlewares/tokenSettingMiddleware";
 
 const router = express.Router();
 const api = makeInvoker(postController);
@@ -17,7 +18,7 @@ router.get("/subdomain/:subdomain", api("getAllPostsBySubdomain"));
 router.delete("/", authenticate, api("deletePost"));
 
 // 4. 게시글 단건 조회
-router.get("/:id", api("getPost"));
+router.get("/:id", tokenSetting, api("getPost"));
 
 // 5. 게시글 수정
 router.put("/:id", authenticate, api("updatePost"));

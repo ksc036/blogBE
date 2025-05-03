@@ -29,7 +29,7 @@ export const postController = ({
   getPost: async (req: Request, res: Response) => {
     const { id } = req.params;
     const userId = req.tokenPayload?.id ?? undefined;
-
+    console.log(userId);
     const posts = await postService.getPost(Number(id), userId);
     res.json(posts);
   },
