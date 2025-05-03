@@ -1,6 +1,6 @@
 // users/user.repository.ts
 import { PrismaClient, User } from "@prisma/client";
-import { ssoUserInfo, updateUserDto } from "./types";
+import { followUserDto, ssoUserInfo, updateUserDto } from "./types";
 
 export class UserRepository {
   private prisma: PrismaClient;
@@ -43,10 +43,24 @@ export class UserRepository {
       data: { [field]: value }, // 동적 키 업데이트
     });
   }
-  // async update(id: number, data: Partial<User>): Promise<User | null> {
-  //   return this.prisma.user.update({ where: { id }, data });
-  // }
-
+  async followUser(data: followUserDto) {
+    return this.prisma.userFollow.create({
+      data: {
+        followerId: data.myId,
+        followingId: data.userId,
+      },
+    });
+  }
+  async unfollowUser(data: followUserDto) {
+    return await this.prisma.userFollow.delete({
+      where: {
+        followerId_followingId: {
+          followerId: data.myId,
+          followingId: data.userId,
+        },
+      },
+    });
+  }
   // async delete(id: number): Promise<User> {
   //   return this.prisma.user.delete({ where: { id } });
   // }

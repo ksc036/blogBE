@@ -2,7 +2,13 @@ import { Request, Response } from "express";
 import { TYPES } from "../di/types";
 import { UserService } from "./user.service";
 import { generateToken, verifyToken } from "../utils/jwt";
-import { dbUserInfo, ssoUserInfo, tokenPayload, updateUserDto } from "./types";
+import {
+  dbUserInfo,
+  followUserDto,
+  ssoUserInfo,
+  tokenPayload,
+  updateUserDto,
+} from "./types";
 import { GetUserBlogProfileUseCase } from "../usecases/getUserBlogProfile.usecase";
 type userControllerDependencies = {
   [TYPES.UserService]: UserService;
@@ -119,6 +125,36 @@ export const userController = (deps: userControllerDependencies) => {
       const { subdomain } = req.params;
       console.log(subdomain);
       const result = await getUserBlogProfileUseCase.execute(subdomain);
+      res.json(result);
+    },
+    followUser: async (req: Request, res: Response) => {
+      const { id } = req.params;
+      const userId = req.tokenPayload.id;
+      const data: followUserDto = { myId: userId, userId: Number(id) };
+      const result = await userService.followUser(data);
+      res.json(result);
+    },
+    unfollowUser: async (req: Request, res: Response) => {
+      const { id } = req.params;
+      const userId = req.tokenPayload.id;
+      const data: followUserDto = { myId: userId, userId: Number(id) };
+      const result = await userService.unfollowUser(data);
+      res.json(result);
+    },
+    getFollowings: async (req: Request, res: Response) => {
+      const { id } = req.params;
+      console.log(id);
+      const userId = req.tokenPayload.id;
+      const data: followUserDto = { myId: userId, userId: Number(id) };
+      const result = await userService.followUser(data);
+      res.json(result);
+    },
+    getFollowers: async (req: Request, res: Response) => {
+      const { id } = req.params;
+      console.log(id);
+      const userId = req.tokenPayload.id;
+      const data = { myId: userId, userId: id };
+      const result = await userService.followUser(data);
       res.json(result);
     },
   };

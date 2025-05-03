@@ -29,3 +29,8 @@ export type updateUserDto = {
   field: string;
   value: string;
 };
+
+export type followUserDto = {
+  myId: number;
+  userId: number;
+};

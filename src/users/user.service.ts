@@ -1,7 +1,7 @@
 import axios from "axios";
 import { TYPES } from "../di/types";
 import { UserRepository } from "./user.repository";
-import { ssoUserInfo, updateUserDto } from "./types";
+import { followUserDto, ssoUserInfo, updateUserDto } from "./types";
 export class UserService {
   private userRepository: UserRepository;
   constructor({
@@ -74,5 +74,11 @@ export class UserService {
   }
   async updateUser(data: updateUserDto) {
     return await this.userRepository.updateUserInfo(data);
+  }
+  async followUser(data: followUserDto) {
+    return await this.userRepository.followUser(data);
+  }
+  async unfollowUser(data: followUserDto) {
+    return await this.userRepository.unfollowUser(data);
   }
 }
