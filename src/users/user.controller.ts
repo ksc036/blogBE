@@ -60,6 +60,7 @@ export const userController = (deps: userControllerDependencies) => {
           secure: true,
           domain: ".ksc036.store",
           path: "/",
+          maxAge: 15 * 1000 * 60 * 60 * 24,
         }); // 쿠키에 JWT 저장
         res.redirect(`http://${dbUserInfo.subdomain}.ksc036.store`); // 로그인 후 프론트로 이동
       } catch (error) {

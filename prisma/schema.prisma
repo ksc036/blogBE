@@ -33,8 +33,19 @@ model User {
   comments      Comment[]
   posts         Post[] 
   likes         PostLike[]   @relation("UserLikes")
+  following     UserFollow[] @relation("FollowingRelation")
+  followers     UserFollow[] @relation("FollowerRelation")
 }
+model UserFollow {
+  id           Int      @id @default(autoincrement())
+  follower     User     @relation("FollowingRelation", fields: [followerId], references: [id])
+  followerId   Int
+  following    User     @relation("FollowerRelation", fields: [followingId], references: [id])
+  followingId  Int
+  createdAt    DateTime @default(now())
 
+  @@unique([followerId, followingId]) // 중복 팔로우 방지
+}
 model Post {
   id           Int       @id @default(autoincrement())
   title        String // VARCHAR(255) 굳이 명시 안 해도 됨
@@ -85,3 +96,4 @@ model PostLike {
 
   @@unique([userId, postId]) // 중복 좋아요 방지
 }
+
