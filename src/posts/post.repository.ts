@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
+import { postLike } from "./typs";
 
 export class PostRepository {
   private prisma: PrismaClient;
@@ -20,13 +21,22 @@ export class PostRepository {
   async findAllPosts() {
     return this.prisma.post.findMany({
       orderBy: {
-        createdAt: "desc", // 생성일 기준 내림차순 정렬
+        createdAt: "desc",
       },
       where: {
-        isDeleted: false, // 삭제되지 않은 게시글만 조회
+        isDeleted: false,
       },
       include: {
         user: true,
+        comments: {
+          where: { isDeleted: false },
+          select: { id: true },
+        },
+        _count: {
+          select: {
+            likes: true, // ✅ 좋아요 개수
+          },
+        },
       },
     });
   }
@@ -39,6 +49,11 @@ export class PostRepository {
       },
 
       include: {
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
         comments: {
           where: {
             // isDeleted: false, // 삭제되지 않은 댓글만 조회
@@ -67,7 +82,6 @@ export class PostRepository {
   async updatePost(data: UpdatePostDTO) {
     const { id, title, content, thumbnailUrl, desc, visibility, postUrl } =
       data;
-    console.log("repo" + id);
 
     return await this.prisma.post.update({
       where: { id },
@@ -98,6 +112,13 @@ export class PostRepository {
       orderBy: {
         createdAt: "desc", // 생성일 기준 내림차순 정렬
       },
+      include: {
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
+      },
     });
   }
   async getBlogPostByuserId(userId: number) {
@@ -109,7 +130,33 @@ export class PostRepository {
       orderBy: {
         createdAt: "desc", // 생성일 기준 내림차순 정렬
       },
-      include: { user: true },
+      include: {
+        user: true,
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
+        comments: {
+          where: { isDeleted: false },
+          select: { id: true },
+        },
+      },
+    });
+  }
+  async addPostLike(data: postLike) {
+    return await this.prisma.postLike.create({
+      data,
+    });
+  }
+  async deletePostLike(data: postLike) {
+    return await this.prisma.postLike.delete({
+      where: {
+        userId_postId: {
+          userId: data.userId,
+          postId: data.postId,
+        },
+      },
     });
   }
 }

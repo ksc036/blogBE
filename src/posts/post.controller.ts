@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { TYPES } from "../di/types";
 import { PostService } from "./post.service";
 import { CreatePostDTO } from "./post.dto";
+import { postLike } from "./typs";
 
 export const postController = ({
   [TYPES.PostService]: postService,
@@ -65,6 +66,23 @@ export const postController = ({
       return res.status(400).json({ error: "서브도메인이 없습니다." });
     }
     const posts = await postService.getAllPostsBySubdomain(subdomain);
+    res.json(posts);
+  },
+  likePost: async (req: Request, res: Response) => {
+    // const userId = 2;
+    const userId = (req.tokenPayload as any).id;
+    const { id } = req.params;
+    const data: postLike = { userId, postId: Number(id) };
+    console.log(data);
+    const posts = await postService.addPostLike(data);
+    res.json(posts);
+  },
+  unLikePost: async (req: Request, res: Response) => {
+    // const userId = 2;
+    const userId = (req.tokenPayload as any).id;
+    const { id } = req.params;
+    const data: postLike = { userId, postId: Number(id) };
+    const posts = await postService.deletePostLike(data);
     res.json(posts);
   },
 });

@@ -22,4 +22,7 @@ router.get("/:id", api("getPost"));
 // 5. 게시글 수정
 router.put("/:id", authenticate, api("updatePost"));
 
+router.post("/:id/like", authenticate, api("likePost"));
+router.delete("/:id/like", authenticate, api("unLikePost"));
+
 export default router;

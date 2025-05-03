@@ -2,6 +2,7 @@ import { PostRepository } from "./post.repository";
 import { TYPES } from "../di/types";
 import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
 import { UserService } from "../users/user.service";
+import { postLike } from "./typs";
 type PostServiceDependencies = {
   [TYPES.PostRepository]: PostRepository;
   [TYPES.UserService]: UserService;
@@ -20,7 +21,12 @@ export class PostService {
   }
 
   async getAllPosts() {
-    return this.postRepository.findAllPosts();
+    const posts = await this.postRepository.findAllPosts();
+    const postsWithCommentCount = posts.map((post) => ({
+      ...post,
+      commentCount: post.comments.length,
+    }));
+    return postsWithCommentCount;
   }
   async getPost(id: number) {
     const post = await this.postRepository.findPost(id);
@@ -63,7 +69,18 @@ export class PostService {
     return this.postRepository.findAllByUserId(userId);
   }
   async getBlogPostByuserId(userId: number) {
-    console.log(userId);
-    return this.postRepository.getBlogPostByuserId(userId);
+    const posts = await this.postRepository.getBlogPostByuserId(userId);
+    const postsWithCommentCount = posts.map((post) => ({
+      ...post,
+      commentCount: post.comments.length,
+    }));
+    return postsWithCommentCount;
+  }
+  async addPostLike(data: postLike) {
+    return this.postRepository.addPostLike(data);
+  }
+
+  async deletePostLike(data: postLike) {
+    return this.postRepository.deletePostLike(data);
   }
 }
