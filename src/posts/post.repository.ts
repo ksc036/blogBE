@@ -41,7 +41,7 @@ export class PostRepository {
     });
   }
 
-  async findPost(id: number) {
+  async findPost(id: number, userId?: number) {
     return await this.prisma.post.findUnique({
       where: {
         id,
@@ -49,6 +49,14 @@ export class PostRepository {
       },
 
       include: {
+        ...(userId
+          ? {
+              likes: {
+                where: { userId },
+                select: { id: true },
+              },
+            }
+          : {}),
         _count: {
           select: {
             likes: true,

@@ -28,29 +28,33 @@ export class PostService {
     }));
     return postsWithCommentCount;
   }
-  async getPost(id: number) {
-    const post = await this.postRepository.findPost(id);
-    if (post) {
-      post.comments = post.comments
-        .filter((comment) => {
-          // 삭제된 댓글인데 replies가 없는 경우는 제거
-          if (comment.isDeleted && comment.replies.length === 0) {
-            return false;
-          }
-          return true;
-        })
-        .map((comment) => {
-          if (comment.isDeleted && comment.replies.length > 0) {
-            return {
-              ...comment,
-              content: "삭제된 메시지입니다",
-            };
-          }
-          return comment;
-        });
+  async getPost(id: number, userId?: number) {
+    const post = await this.postRepository.findPost(id, userId);
+    if (!post) {
+      return null;
     }
-
-    return post;
+    post.comments = post.comments
+      .filter((comment) => {
+        // 삭제된 댓글인데 replies가 없는 경우는 제거
+        if (comment.isDeleted && comment.replies.length === 0) {
+          return false;
+        }
+        return true;
+      })
+      .map((comment) => {
+        if (comment.isDeleted && comment.replies.length > 0) {
+          return {
+            ...comment,
+            content: "삭제된 메시지입니다",
+          };
+        }
+        return comment;
+      });
+    return {
+      ...post,
+      isLiked: userId ? post.likes.length > 0 : false, // ✅ 조건 분기
+      likes: undefined, // optional: 프론트에 likes 배열 숨김
+    };
   }
   async updatePost(data: UpdatePostDTO) {
     console.log("service" + data.id);
