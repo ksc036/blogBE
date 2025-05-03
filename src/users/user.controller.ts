@@ -130,6 +130,7 @@ export const userController = (deps: userControllerDependencies) => {
     followUser: async (req: Request, res: Response) => {
       const { id } = req.params;
       const userId = req.tokenPayload.id;
+      // const userId = 2;
       const data: followUserDto = { myId: userId, userId: Number(id) };
       const result = await userService.followUser(data);
       res.json(result);
@@ -137,6 +138,7 @@ export const userController = (deps: userControllerDependencies) => {
     unfollowUser: async (req: Request, res: Response) => {
       const { id } = req.params;
       const userId = req.tokenPayload.id;
+      // const userId = 2;
       const data: followUserDto = { myId: userId, userId: Number(id) };
       const result = await userService.unfollowUser(data);
       res.json(result);
