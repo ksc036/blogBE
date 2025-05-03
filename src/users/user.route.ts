@@ -3,12 +3,17 @@ import { makeInvoker } from "awilix-express"; // 🔥 추가
 import { userController } from "./user.controller";
 import container from "../di/container"; // 🔥 추가
 import { authenticate } from "../middlewares/authMiddleware";
+import { tokenSetting } from "../middlewares/tokenSettingMiddleware";
 
 const router = express.Router();
 const api = makeInvoker(userController);
 
 router.get("/", authenticate, api("getUsers"));
-router.get("/blogProfile/:subdomain", api("blogProfileBySubdomain"));
+router.get(
+  "/blogProfile/:subdomain",
+  tokenSetting,
+  api("blogProfileBySubdomain")
+);
 
 router.put("/", authenticate, api("updateUser"));
 

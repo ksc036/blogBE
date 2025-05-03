@@ -14,8 +14,11 @@ export class GetUserBlogProfileUseCase {
     this.postService = deps[TYPES.PostService] as PostService;
   }
 
-  async execute(subdomain: string) {
-    const user = await this.userService.getBlogProfileBySubdomain(subdomain);
+  async execute(subdomain: string, userId?: number) {
+    const user = await this.userService.getBlogProfileBySubdomain(
+      subdomain,
+      userId
+    );
     if (!user) {
       throw new Error(`서브도메인 ${subdomain}에 해당하는 유저가 없습니다.`);
     }

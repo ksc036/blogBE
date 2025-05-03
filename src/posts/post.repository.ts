@@ -42,7 +42,7 @@ export class PostRepository {
   }
 
   async findPost(id: number, userId?: number) {
-    return await this.prisma.post.findUnique({
+    const post = await this.prisma.post.findUnique({
       where: {
         id,
         isDeleted: false, // 삭제되지 않은 게시글만 조회
@@ -86,6 +86,27 @@ export class PostRepository {
         user: true,
       },
     });
+    if (!userId) {
+      // 로그인 안 된 사용자 → 무조건 false
+      return {
+        post,
+        isSubscribed: false,
+      };
+    }
+    if (!post) return null;
+    const follow = await this.prisma.userFollow.findUnique({
+      where: {
+        followerId_followingId: {
+          followerId: userId,
+          followingId: post.user.id,
+        },
+      },
+    });
+
+    return {
+      post,
+      isSubscribed: !!follow,
+    };
   }
   async updatePost(data: UpdatePostDTO) {
     const { id, title, content, thumbnailUrl, desc, visibility, postUrl } =

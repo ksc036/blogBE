@@ -28,11 +28,31 @@ export class UserRepository {
     });
     return user ? user.id : null;
   }
-  async getUserInfoBySubdomain(subdomain: string): Promise<User | null> {
+  async getUserInfoBySubdomain(subdomain: string, userId?: number) {
     const user = await this.prisma.user.findUnique({
       where: { subdomain },
     });
-    return user;
+    if (!user) return null;
+
+    if (!userId) {
+      // 로그인 안 된 사용자 → 무조건 false
+      return {
+        user,
+        isSubscribed: false,
+      };
+    }
+    const follow = await this.prisma.userFollow.findUnique({
+      where: {
+        followerId_followingId: {
+          followerId: userId,
+          followingId: user.id,
+        },
+      },
+    });
+    return {
+      user,
+      isSubscribed: !!follow,
+    };
   }
 
   async updateUserInfo(data: updateUserDto): Promise<User> {
