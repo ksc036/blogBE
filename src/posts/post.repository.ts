@@ -89,11 +89,12 @@ export class PostRepository {
     if (!userId) {
       // 로그인 안 된 사용자 → 무조건 false
       return {
-        post,
+        ...post,
         isSubscribed: false,
       };
     }
     if (!post) return null;
+
     const follow = await this.prisma.userFollow.findUnique({
       where: {
         followerId_followingId: {
@@ -104,7 +105,7 @@ export class PostRepository {
     });
 
     return {
-      post,
+      ...post,
       isSubscribed: !!follow,
     };
   }
