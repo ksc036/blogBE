@@ -19,7 +19,7 @@ export class GetUserBlogProfileUseCase {
       subdomain,
       userId
     );
-    if (!user) {
+    if (!user?.id) {
       throw new Error(`서브도메인 ${subdomain}에 해당하는 유저가 없습니다.`);
     }
     const posts = await this.postService.getBlogPostByuserId(user.id);

@@ -37,7 +37,7 @@ export class UserRepository {
     if (!userId) {
       // 로그인 안 된 사용자 → 무조건 false
       return {
-        user,
+        ...user,
         isSubscribed: false,
       };
     }
@@ -50,7 +50,7 @@ export class UserRepository {
       },
     });
     return {
-      user,
+      ...user,
       isSubscribed: !!follow,
     };
   }

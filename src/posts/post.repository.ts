@@ -152,6 +152,7 @@ export class PostRepository {
     });
   }
   async getBlogPostByuserId(userId: number) {
+    console.log("getBlogPostByuserId userId : ", userId);
     return this.prisma.post.findMany({
       where: {
         userId,
