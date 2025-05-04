@@ -15,10 +15,12 @@ export class GetUserBlogProfileUseCase {
   }
 
   async execute(subdomain: string, userId?: number) {
+    console.log("GetUserBlogProfileUseCase", subdomain, userId);
     const user = await this.userService.getBlogProfileBySubdomain(
       subdomain,
       userId
     );
+    console.log("GetUserBlogProfileUseCase user", user);
     if (!user?.id) {
       throw new Error(`서브도메인 ${subdomain}에 해당하는 유저가 없습니다.`);
     }

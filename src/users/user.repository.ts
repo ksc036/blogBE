@@ -34,6 +34,7 @@ export class UserRepository {
     });
     if (!user) return null;
 
+    console.log("userId", userId, !userId);
     if (!userId) {
       // 로그인 안 된 사용자 → 무조건 false
       return {
