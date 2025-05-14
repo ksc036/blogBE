@@ -115,8 +115,6 @@ jobs:
           argocd login argocd.ksc036.store \
             --username ${{ secrets.ARGOCD_USERNAME }} \
             --password ${{ secrets.ARGOCD_PASSWORD }} \
-            --insecure
-
       - name: Sync application
         run: |
           echo "ENV_DIR is ${{ needs.gitops-update.outputs.dir }}"
