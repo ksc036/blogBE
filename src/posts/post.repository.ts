@@ -190,4 +190,19 @@ export class PostRepository {
       },
     });
   }
+  async getPostId(subdomain: string, postUrl: string) {
+    const post = await this.prisma.post.findFirst({
+      where: {
+        postUrl,
+        user: {
+          subdomain,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return post?.id ?? null; // 없으면 null 반환
+  }
 }

@@ -87,4 +87,8 @@ export class PostService {
   async deletePostLike(data: postLike) {
     return this.postRepository.deletePostLike(data);
   }
+  async getPostId(subdomain: string, id: string) {
+    console.log("getPostId Called");
+    return this.postRepository.getPostId(subdomain, id);
+  }
 }
