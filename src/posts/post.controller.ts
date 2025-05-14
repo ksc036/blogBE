@@ -93,6 +93,16 @@ export const postController = (deps: postControllerDependencies) => {
       const { id, subdomain } = req.params;
       const userId = req.tokenPayload?.id ?? undefined;
       const postIdResult = await postService.getPostId(subdomain, id);
+      console.log(
+        "id",
+        id,
+        "subdomain",
+        subdomain,
+        "userId",
+        userId,
+        "postIdResult",
+        postIdResult
+      );
       if (!postIdResult) {
         // 예외 처리: 없는 게시글일 수 있음
         throw new Error("Post not found");
