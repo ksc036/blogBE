@@ -18,8 +18,8 @@ export const postController = (deps: postControllerDependencies) => {
 
         const data: CreatePostDTO = req.body;
         data.userId = userId;
-        const postId = await postService.createPost(data);
-        res.status(201).json({ postId });
+        const post = await postService.createPost(data);
+        res.status(201).json({ post });
       } catch (error) {
         res.status(500).json({ error: "게시글 작성중 문제 발생" });
       }
