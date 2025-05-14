@@ -9,13 +9,12 @@ export class PostRepository {
   }
   async createPost(data: CreatePostDTO) {
     // 자동 생성된 ID 가져오기
-    const createdPost = await this.prisma.post.create({
+    return await this.prisma.post.create({
       data,
     });
-
-    const postId = createdPost.id;
-    console.log("postId", postId); // 생성된 ID 출력
-    return postId;
+    // const postId = createdPost.id;
+    // console.log("postId", postId); // 생성된 ID 출력
+    // return postId;
   }
 
   async findAllPosts() {
