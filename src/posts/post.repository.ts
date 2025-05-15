@@ -24,6 +24,7 @@ export class PostRepository {
       },
       select: { id: true },
     });
+    console.log("existing ::", existing);
     return !!existing;
   }
 

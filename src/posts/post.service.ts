@@ -22,8 +22,8 @@ export class PostService {
       data.userId,
       data.postUrl
     );
+    console.log(isExist);
     if (!isExist) {
-      // 없으면면
       return this.postRepository.createPost(data);
     }
     //있으면
