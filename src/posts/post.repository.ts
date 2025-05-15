@@ -16,7 +16,35 @@ export class PostRepository {
     // console.log("postId", postId); // 생성된 ID 출력
     // return postId;
   }
+  async isExistPostUrl(userId: string, slug: string): Promise<boolean> {
+    const existing = await this.prisma.post.findFirst({
+      where: {
+        userId,
+        postUrl: slug,
+      },
+      select: { id: true },
+    });
+    return !!existing;
+  }
 
+  async findSimilarPostUrls(
+    userId: string,
+    baseSlug: string
+  ): Promise<string[]> {
+    return this.prisma.post
+      .findMany({
+        where: {
+          userId,
+          postUrl: {
+            startsWith: baseSlug + "-",
+          },
+        },
+        select: {
+          postUrl: true,
+        },
+      })
+      .then((results) => results.map((r) => r.postUrl));
+  }
   async findAllPosts() {
     return this.prisma.post.findMany({
       orderBy: {

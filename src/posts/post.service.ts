@@ -17,6 +17,33 @@ export class PostService {
   }
 
   async createPost(data: CreatePostDTO) {
+    const baseSlug = data.postUrl;
+    const isExist = this.postRepository.isExistPostUrl(
+      data.userId,
+      data.postUrl
+    );
+    if (!isExist) {
+      // 없으면면
+      return this.postRepository.createPost(data);
+    }
+    //있으면
+    const similarSlugs = await this.postRepository.findSimilarPostUrls(
+      data.userId,
+      baseSlug
+    );
+    const regex = new RegExp(`^${baseSlug}-(\\d+)$`);
+    let maxSuffix = 0;
+    for (const slug of similarSlugs) {
+      const match = slug.match(regex);
+      if (match) {
+        const num = parseInt(match[1], 10);
+        if (!isNaN(num) && num >= maxSuffix) {
+          maxSuffix = num + 1;
+        }
+      }
+    }
+    const uniqueSlug = `${baseSlug}-${maxSuffix || 1}`;
+    data.postUrl = uniqueSlug;
     return this.postRepository.createPost(data);
   }
 

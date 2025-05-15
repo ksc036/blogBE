@@ -62,6 +62,7 @@ model Post {
   userId   Int  @default(1)
   comments     Comment[]
   likes        PostLike[]     @relation("PostLikes")
+   @@unique([userId, postUrl])
 }
 
 model Comment {
