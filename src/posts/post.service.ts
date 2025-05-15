@@ -22,7 +22,7 @@ export class PostService {
       data.userId,
       data.postUrl
     );
-    console.log(isExist);
+    console.log("isExist :::", isExist);
     if (!isExist) {
       return this.postRepository.createPost(data);
     }
