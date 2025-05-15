@@ -18,7 +18,7 @@ export class PostService {
 
   async createPost(data: CreatePostDTO) {
     const baseSlug = data.postUrl;
-    const isExist = this.postRepository.isExistPostUrl(
+    const isExist = await this.postRepository.isExistPostUrl(
       data.userId,
       data.postUrl
     );
