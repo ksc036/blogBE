@@ -63,11 +63,13 @@ export const userController = (deps: userControllerDependencies) => {
         res.cookie("token", token, {
           httpOnly: true,
           secure: true,
-          domain: ".ksc036.store",
+          domain: `.${process.env.DOMAIN_NAME}`,
           path: "/",
           maxAge: 15 * 1000 * 60 * 60 * 24,
         }); // 쿠키에 JWT 저장
-        res.redirect(`http://${dbUserInfo.subdomain}.ksc036.store`); // 로그인 후 프론트로 이동
+        res.redirect(
+          `http://${dbUserInfo.subdomain}.${process.env.DOMAIN_NAME}`
+        ); // 로그인 후 프론트로 이동
       } catch (error) {
         console.error(error);
         res.status(500).send("구글 로그인 실패");
@@ -93,7 +95,7 @@ export const userController = (deps: userControllerDependencies) => {
       res.clearCookie("token", {
         httpOnly: true,
         secure: true,
-        domain: ".ksc036.store",
+        domain: `.${process.env.DOMAIN_NAME}`,
         path: "/",
       });
       res.status(200).send("Logout success");
