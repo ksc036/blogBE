@@ -10,6 +10,7 @@ import {
   updateUserDto,
 } from "./types";
 import { GetUserBlogProfileUseCase } from "../usecases/getUserBlogProfile.usecase";
+import { User } from "@prisma/client";
 type userControllerDependencies = {
   [TYPES.UserService]: UserService;
   [TYPES.GetUserBlogProfileUseCase]: GetUserBlogProfileUseCase;
@@ -49,9 +50,7 @@ export const userController = (deps: userControllerDependencies) => {
         const SsoUserInfo: ssoUserInfo = await userService.getGoogleUserInfo(
           code as string
         );
-        const dbUserInfo: dbUserInfo = await userService.saveUserInfo(
-          SsoUserInfo
-        );
+        const dbUserInfo: User = await userService.saveUserInfo(SsoUserInfo);
 
         console.log("Google User Info:", SsoUserInfo);
         const token = generateToken({
@@ -83,7 +82,7 @@ export const userController = (deps: userControllerDependencies) => {
       console.log("getMe called", token);
       // res.json({ status: "ok" });
       try {
-        const userInfo = await userService.getUserInfoById(payload.id);
+        const userInfo = await userService.getUserInfoById((payload as any).id);
         res.json(userInfo);
       } catch (error) {
         console.error(error);
@@ -115,7 +114,7 @@ export const userController = (deps: userControllerDependencies) => {
       }
       console.log("end");
       const user = await userService.updateUser({
-        userId: req.tokenPayload.id,
+        userId: (req.tokenPayload as any).id,
         field,
         value,
       } as updateUserDto);
@@ -123,14 +122,14 @@ export const userController = (deps: userControllerDependencies) => {
     },
     blogProfileBySubdomain: async (req: Request, res: Response) => {
       const { subdomain } = req.params;
-      const userId = req.tokenPayload?.id ?? undefined;
+      const userId = (req.tokenPayload as any)?.id ?? undefined;
       console.log(subdomain);
       const result = await getUserBlogProfileUseCase.execute(subdomain, userId);
       res.json(result);
     },
     followUser: async (req: Request, res: Response) => {
       const { id } = req.params;
-      const userId = req.tokenPayload.id;
+      const userId = (req.tokenPayload as any).id;
       // const userId = 2;
       const data: followUserDto = { myId: userId, userId: Number(id) };
       const result = await userService.followUser(data);
@@ -138,7 +137,7 @@ export const userController = (deps: userControllerDependencies) => {
     },
     unfollowUser: async (req: Request, res: Response) => {
       const { id } = req.params;
-      const userId = req.tokenPayload.id;
+      const userId = (req.tokenPayload as any).id;
       // const userId = 2;
       const data: followUserDto = { myId: userId, userId: Number(id) };
       const result = await userService.unfollowUser(data);
@@ -147,7 +146,7 @@ export const userController = (deps: userControllerDependencies) => {
     getFollowings: async (req: Request, res: Response) => {
       const { id } = req.params;
       console.log(id);
-      const userId = req.tokenPayload.id;
+      const userId = (req.tokenPayload as any).id;
       const data: followUserDto = { myId: userId, userId: Number(id) };
       const result = await userService.followUser(data);
       res.json(result);
@@ -155,8 +154,8 @@ export const userController = (deps: userControllerDependencies) => {
     getFollowers: async (req: Request, res: Response) => {
       const { id } = req.params;
       console.log(id);
-      const userId = req.tokenPayload.id;
-      const data = { myId: userId, userId: id };
+      const userId = (req.tokenPayload as any).id;
+      const data = { myId: userId, userId: Number(id) };
       const result = await userService.followUser(data);
       res.json(result);
     },

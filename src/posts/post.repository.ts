@@ -16,7 +16,7 @@ export class PostRepository {
     // console.log("postId", postId); // 생성된 ID 출력
     // return postId;
   }
-  async isExistPostUrl(userId: string, slug: string): Promise<boolean> {
+  async isExistPostUrl(userId: number, slug: string): Promise<boolean> {
     const existing = await this.prisma.post.findFirst({
       where: {
         userId,
@@ -29,7 +29,7 @@ export class PostRepository {
   }
 
   async findSimilarPostUrls(
-    userId: string,
+    userId: number,
     baseSlug: string
   ): Promise<string[]> {
     return this.prisma.post

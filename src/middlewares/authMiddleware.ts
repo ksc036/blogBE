@@ -15,7 +15,7 @@ export const authenticate = (
 
   try {
     const decoded = verifyToken(token);
-    req.tokenPayload = decoded;
+    (req.tokenPayload as any) = decoded;
     next();
   } catch (error) {
     console.error("JWT 인증 실패:", error);

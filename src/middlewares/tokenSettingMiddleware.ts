@@ -10,7 +10,7 @@ export const tokenSetting = (
   console.log("token", token);
   if (token) {
     const decoded = verifyToken(token);
-    req.tokenPayload = decoded;
+    (req.tokenPayload as any) = decoded;
   }
   next();
 };

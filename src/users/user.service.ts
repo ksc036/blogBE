@@ -1,7 +1,8 @@
 import axios from "axios";
 import { TYPES } from "../di/types";
 import { UserRepository } from "./user.repository";
-import { followUserDto, ssoUserInfo, updateUserDto } from "./types";
+import { dbUserInfo, followUserDto, ssoUserInfo, updateUserDto } from "./types";
+import { User } from "@prisma/client";
 export class UserService {
   private userRepository: UserRepository;
   constructor({
@@ -46,7 +47,7 @@ export class UserService {
 
     return userInfo.data;
   }
-  async saveUserInfo(userInfo: ssoUserInfo) {
+  async saveUserInfo(userInfo: ssoUserInfo): Promise<User> {
     const { sub, email, name, provider } = userInfo;
     const user = await this.userRepository.findByEmail(email);
     if (!user) {

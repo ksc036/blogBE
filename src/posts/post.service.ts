@@ -18,6 +18,9 @@ export class PostService {
 
   async createPost(data: CreatePostDTO) {
     const baseSlug = data.postUrl;
+    if (!data.userId) {
+      throw new Error("userId가 없습니다.");
+    }
     const isExist = await this.postRepository.isExistPostUrl(
       data.userId,
       data.postUrl
@@ -61,7 +64,7 @@ export class PostService {
       return null;
     }
     post.comments = post.comments
-      .filter((comment) => {
+      ?.filter((comment) => {
         // 삭제된 댓글인데 replies가 없는 경우는 제거
         if (comment.isDeleted && comment.replies.length === 0) {
           return false;
@@ -79,7 +82,7 @@ export class PostService {
       });
     return {
       ...post,
-      isLiked: userId ? post.likes.length > 0 : false, // ✅ 조건 분기
+      isLiked: userId ? (post.likes ?? []).length > 0 : false, // ✅ 조건 분기
       likes: undefined, // optional: 프론트에 likes 배열 숨김
     };
   }
