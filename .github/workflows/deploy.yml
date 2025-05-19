@@ -9,6 +9,8 @@ on:
 jobs:
   docker-build-and-push:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     environment: docker
     outputs:
       tag: ${{ steps.extract_tag.outputs.TAG }}
@@ -58,6 +60,9 @@ jobs:
           push: true
           tags: |
             ksc036/blog-backend:${{ env.TAG }}
+      - name: Run DB Migration
+        if: startsWith(github.ref, 'refs/tags/prod-')
+        run: npx prisma migrate deploy
   gitops-update:
     runs-on: ubuntu-latest
     environment: git
