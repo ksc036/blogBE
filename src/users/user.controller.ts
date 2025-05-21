@@ -63,6 +63,7 @@ export const userController = (deps: userControllerDependencies) => {
         res.cookie("token", token, {
           httpOnly: true,
           secure: true,
+          sameSite: "none", // cross-site 허용
           domain: `.${process.env.DOMAIN_NAME}`,
           path: "/",
           maxAge: 15 * 1000 * 60 * 60 * 24,
