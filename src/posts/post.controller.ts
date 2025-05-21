@@ -63,17 +63,17 @@ export const postController = (deps: postControllerDependencies) => {
       const posts = await postService.deletePost(id);
       res.json(posts);
     },
-    getAllPostsBySubdomain: async (req: Request, res: Response) => {
-      // const host = req.headers.host;
-      // const subdomain = host?.split(".")[0];
-      const { subdomain } = req.params;
-      console.log("서브도메인:", subdomain);
-      if (!subdomain) {
-        return res.status(400).json({ error: "서브도메인이 없습니다." });
-      }
-      const posts = await postService.getAllPostsBySubdomain(subdomain);
-      res.json(posts);
-    },
+    // getAllPostsBySubdomain: async (req: Request, res: Response) => {
+    //   // const host = req.headers.host;
+    //   // const subdomain = host?.split(".")[0];
+    //   const { subdomain } = req.params;
+    //   console.log("서브도메인:", subdomain);
+    //   if (!subdomain) {
+    //     return res.status(400).json({ error: "서브도메인이 없습니다." });
+    //   }
+    //   const posts = await postService.getAllPostsBySubdomain(subdomain);
+    //   res.json(posts);
+    // },
     likePost: async (req: Request, res: Response) => {
       // const userId = 2;
       const userId = (req.tokenPayload as any).id;

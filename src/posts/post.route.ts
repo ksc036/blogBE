@@ -12,7 +12,7 @@ router.post("/", authenticate, api("createPost"));
 // 2. 게시글 목록 조회
 router.get("/", api("getAllPosts"));
 
-router.get("/subdomain/:subdomain", api("getAllPostsBySubdomain"));
+// router.get("/subdomain/:subdomain", api("getAllPostsBySubdomain"));
 
 // 3. 게시글 삭제
 router.delete("/", authenticate, api("deletePost"));

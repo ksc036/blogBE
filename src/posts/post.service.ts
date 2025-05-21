@@ -1,19 +1,15 @@
 import { PostRepository } from "./post.repository";
 import { TYPES } from "../di/types";
 import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
-import { UserService } from "../users/user.service";
 import { postLike } from "./typs";
 type PostServiceDependencies = {
   [TYPES.PostRepository]: PostRepository;
-  [TYPES.UserService]: UserService;
 };
 export class PostService {
   private postRepository: PostRepository;
-  private userService: UserService;
 
   constructor(deps: PostServiceDependencies) {
     this.postRepository = deps[TYPES.PostRepository] as PostRepository;
-    this.userService = deps[TYPES.UserService] as UserService;
   }
 
   async createPost(data: CreatePostDTO) {
@@ -93,15 +89,15 @@ export class PostService {
   async deletePost(id: number) {
     this.postRepository.deletePost(id);
   }
-  async getAllPostsBySubdomain(subdomain: string) {
-    const userId = await this.userService.getUserIdBySubdomain(subdomain);
-    console.log("subdomain", subdomain);
-    console.log("userId", userId);
-    if (!userId) {
-      throw new Error("해당 서브도메인에 대한 사용자가 없습니다.");
-    }
-    return this.postRepository.findAllByUserId(userId);
-  }
+  // async getAllPostsBySubdomain(subdomain: string) {
+  //   const userId = await this.userService.getUserIdBySubdomain(subdomain);
+  //   console.log("subdomain", subdomain);
+  //   console.log("userId", userId);
+  //   if (!userId) {
+  //     throw new Error("해당 서브도메인에 대한 사용자가 없습니다.");
+  //   }
+  //   return this.postRepository.findAllByUserId(userId);
+  // }
   async getBlogPostByuserId(userId: number) {
     const posts = await this.postRepository.getBlogPostByuserId(userId);
     const postsWithCommentCount = posts.map((post) => ({
