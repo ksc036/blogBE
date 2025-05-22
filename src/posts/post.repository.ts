@@ -180,12 +180,13 @@ export class PostRepository {
       },
     });
   }
-  async getBlogPostByuserId(userId: number) {
+  async getBlogPostByuserId(userId: number, mine: boolean) {
     console.log("getBlogPostByuserId userId : ", userId);
     return this.prisma.post.findMany({
       where: {
         userId,
         isDeleted: false, // 삭제되지 않은 게시글만 조회
+        ...(mine ? {} : { visibility: true }),
       },
       orderBy: {
         createdAt: "desc", // 생성일 기준 내림차순 정렬

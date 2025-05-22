@@ -98,8 +98,8 @@ export class PostService {
   //   }
   //   return this.postRepository.findAllByUserId(userId);
   // }
-  async getBlogPostByuserId(userId: number) {
-    const posts = await this.postRepository.getBlogPostByuserId(userId);
+  async getBlogPostByuserId(userId: number, mine: boolean) {
+    const posts = await this.postRepository.getBlogPostByuserId(userId, mine);
     const postsWithCommentCount = posts.map((post) => ({
       ...post,
       commentCount: post.comments.length,
