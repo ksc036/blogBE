@@ -15,17 +15,17 @@ export class GetUserBlogProfileUseCase {
   }
 
   async execute(subdomain: string, tokenUserId?: number) {
-    console.log("GetUserBlogProfileUseCase", subdomain, tokenUserId);
+    // console.log("GetUserBlogProfileUseCase", subdomain, tokenUserId);
     const user = await this.userService.getBlogProfileBySubdomain(
       subdomain,
       tokenUserId
     );
-    console.log("GetUserBlogProfileUseCase user", user);
+    // console.log("GetUserBlogProfileUseCase user", user);
     if (!user?.id) {
       throw new Error(`서브도메인 ${subdomain}에 해당하는 유저가 없습니다.`);
     }
     const mine = user?.id === tokenUserId;
-    console.log(mine, user, tokenUserId);
+    console.log(mine, user, "tokenUserId :: ", tokenUserId);
     const posts = await this.postService.getBlogPostByuserId(user.id, mine);
     return { user, posts };
   }

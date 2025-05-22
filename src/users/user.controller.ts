@@ -125,9 +125,14 @@ export const userController = (deps: userControllerDependencies) => {
     },
     blogProfileBySubdomain: async (req: Request, res: Response) => {
       const { subdomain } = req.params;
-      const userId = (req.tokenPayload as any)?.id ?? undefined;
-      console.log(subdomain);
-      const result = await getUserBlogProfileUseCase.execute(subdomain, userId);
+      console.log("blogProfileBySubdomain token Payload", req.tokenPayload);
+      const tokenUserId = (req.tokenPayload as any)?.id ?? undefined;
+      console.log("tokenUserId", tokenUserId);
+      console.log("subdomain", subdomain);
+      const result = await getUserBlogProfileUseCase.execute(
+        subdomain,
+        tokenUserId
+      );
       res.json(result);
     },
     followUser: async (req: Request, res: Response) => {
