@@ -7,7 +7,7 @@ export const tokenSetting = (
   next: NextFunction
 ) => {
   const token = req.cookies.token;
-  console.log("token", token);
+  console.log("tokenSetting", token);
   if (token) {
     const decoded = verifyToken(token);
     (req.tokenPayload as any) = decoded;

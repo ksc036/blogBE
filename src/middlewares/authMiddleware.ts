@@ -7,7 +7,7 @@ export const authenticate = (
   next: NextFunction
 ) => {
   const token = req.cookies.token;
-  console.log("token", token);
+  console.log("authenticate", token);
   if (!token) {
     // next(error);
     return next(new Error("Unauthorized"));
