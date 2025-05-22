@@ -25,9 +25,7 @@ export const postController = (deps: postControllerDependencies) => {
       }
     },
     getAllPosts: async (req: Request, res: Response) => {
-      console.log("getAllPosts called");
       const posts = await postService.getAllPosts();
-      console.log("posts: ", posts);
       res.json(posts);
     },
     getPost: async (req: Request, res: Response) => {

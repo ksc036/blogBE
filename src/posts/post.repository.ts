@@ -53,6 +53,7 @@ export class PostRepository {
       },
       where: {
         isDeleted: false,
+        visibility: true,
       },
       include: {
         user: true,
