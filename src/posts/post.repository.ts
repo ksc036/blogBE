@@ -212,6 +212,11 @@ export class PostRepository {
         createdAt: "desc", // 생성일 기준 내림차순 정렬
       },
       include: {
+        postTags: {
+          include: {
+            tag: true, // ← tag를 postTags에서 조인
+          },
+        },
         user: true,
         _count: {
           select: {
