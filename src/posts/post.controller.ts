@@ -17,6 +17,8 @@ export const postController = (deps: postControllerDependencies) => {
         const userId = (req.tokenPayload as any).id; // ✅ id 꺼내기
 
         const data: CreatePostDTO = req.body;
+        console.log("req.body : ", req.body);
+        console.log("data", data);
         data.userId = userId;
         const post = await postService.createPost(data);
         res.status(201).json({ post });
@@ -39,8 +41,15 @@ export const postController = (deps: postControllerDependencies) => {
       const { id } = req.params;
       console.log("updatePost called ", req.body);
       try {
-        const { title, content, thumbnailUrl, desc, visibility, postUrl } =
-          req.body;
+        const {
+          title,
+          content,
+          thumbnailUrl,
+          desc,
+          visibility,
+          postUrl,
+          tags,
+        } = req.body;
         const post = await postService.updatePost({
           id: Number(id),
           title,
@@ -49,6 +58,8 @@ export const postController = (deps: postControllerDependencies) => {
           desc,
           visibility,
           postUrl,
+          tags,
+          userId: (req.tokenPayload as any).id,
         });
         console.log("post", post);
         res.status(201).json({ post });

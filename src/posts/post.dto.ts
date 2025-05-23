@@ -6,6 +6,7 @@ export interface CreatePostDTO {
   visibility: boolean;
   postUrl: string;
   userId?: number;
+  tags?: string[];
 }
 
 export interface UpdatePostDTO {
@@ -16,4 +17,6 @@ export interface UpdatePostDTO {
   desc: string;
   visibility: boolean;
   postUrl: string;
+  userId?: number;
+  tags?: string[];
 }

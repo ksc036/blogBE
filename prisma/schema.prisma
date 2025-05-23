@@ -35,6 +35,7 @@ model User {
   likes         PostLike[]   @relation("UserLikes")
   following     UserFollow[] @relation("FollowingRelation")
   followers     UserFollow[] @relation("FollowerRelation")
+  postTags PostTag[] 
 }
 model UserFollow {
   id           Int      @id @default(autoincrement())
@@ -62,6 +63,7 @@ model Post {
   userId   Int  @default(1)
   comments     Comment[]
   likes        PostLike[]     @relation("PostLikes")
+   postTags PostTag[]
    @@unique([userId, postUrl])
 }
 
@@ -98,3 +100,21 @@ model PostLike {
   @@unique([userId, postId]) // 중복 좋아요 방지
 }
 
+model Tag {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  posts PostTag[]
+}
+
+model PostTag {
+  id     Int   @id @default(autoincrement())
+  userId Int
+  postId Int
+  tagId  Int
+
+  user   User @relation(fields: [userId], references: [id])
+  post   Post @relation(fields: [postId], references: [id])
+  tag    Tag  @relation(fields: [tagId], references: [id])
+
+  @@unique([userId, postId, tagId]) // 중복 방지
+}

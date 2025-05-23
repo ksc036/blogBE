@@ -2,6 +2,8 @@ import { PostRepository } from "./post.repository";
 import { TYPES } from "../di/types";
 import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
 import { postLike } from "./typs";
+import { insertTags } from "../utils/tagHelper";
+
 type PostServiceDependencies = {
   [TYPES.PostRepository]: PostRepository;
 };
@@ -23,7 +25,11 @@ export class PostService {
     );
     console.log("isExist :::", isExist);
     if (!isExist) {
-      return this.postRepository.createPost(data);
+      const post = await this.postRepository.createPost(data);
+      if (data.tags && data.tags.length > 0) {
+        await insertTags(data.tags, post.id, data.userId);
+      }
+      return post;
     }
     //있으면
     const similarSlugs = await this.postRepository.findSimilarPostUrls(
@@ -43,7 +49,11 @@ export class PostService {
     }
     const uniqueSlug = `${baseSlug}-${maxSuffix || 1}`;
     data.postUrl = uniqueSlug;
-    return this.postRepository.createPost(data);
+    const post = await this.postRepository.createPost(data);
+    if (data.tags && data.tags.length > 0) {
+      await insertTags(data.tags, post.id, data.userId);
+    }
+    return post;
   }
 
   async getAllPosts() {
@@ -84,7 +94,15 @@ export class PostService {
   }
   async updatePost(data: UpdatePostDTO) {
     console.log("service" + data.id);
-    return this.postRepository.updatePost(data);
+    if (!data.userId) {
+      throw new Error("userId가 없습니다.");
+    }
+    const post = await this.postRepository.updatePost(data);
+    if (data.tags && data.tags.length > 0) {
+      await insertTags(data.tags, post.id, data.userId);
+    }
+    return post;
+    // return this.postRepository.updatePost(data);
   }
   async deletePost(id: number) {
     this.postRepository.deletePost(id);
