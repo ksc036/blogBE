@@ -23,6 +23,7 @@ export const postController = (deps: postControllerDependencies) => {
         const post = await postService.createPost(data);
         res.status(201).json({ post });
       } catch (error) {
+        console.error("Error creating post:", error);
         res.status(500).json({ error: "게시글 작성중 문제 발생" });
       }
     },

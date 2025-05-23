@@ -1,17 +1,24 @@
 import { PrismaClient } from "@prisma/client";
 import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
 import { postLike } from "./typs";
-import { createInsertTags } from "../utils/tagHelper";
+import { createDeleteTags, createInsertTags } from "../utils/tagHelper";
+import { CreatePostSchema } from "./post.model";
 
 export class PostRepository {
   private prisma: PrismaClient;
   constructor({ prisma }: { prisma: PrismaClient }) {
     this.prisma = prisma;
   }
+
   async createPost(data: CreatePostDTO) {
+    const model = CreatePostSchema.safeParse(data);
+    if (!model.success) {
+      throw new Error("유효하지 않은 게시글 데이터입니다.");
+    }
     const post = await this.prisma.post.create({
-      data,
+      data: model.data,
     });
+    console.log("post created", post);
     const insertTags = createInsertTags(this.prisma);
     if (data.tags && data.tags.length > 0 && data.userId) {
       await insertTags(data.tags, post.id, data.userId);
@@ -80,6 +87,11 @@ export class PostRepository {
       },
 
       include: {
+        postTags: {
+          include: {
+            tag: true, // ← tag를 postTags에서 조인
+          },
+        },
         ...(userId
           ? {
               likes: {
@@ -143,8 +155,7 @@ export class PostRepository {
   async updatePost(data: UpdatePostDTO) {
     const { id, title, content, thumbnailUrl, desc, visibility, postUrl } =
       data;
-
-    return await this.prisma.post.update({
+    const post = await this.prisma.post.update({
       where: { id },
       data: {
         title,
@@ -155,6 +166,13 @@ export class PostRepository {
         postUrl,
       },
     });
+    const deleteTags = createDeleteTags(this.prisma);
+    await deleteTags(post.id, data.userId);
+    const insertTags = createInsertTags(this.prisma);
+    if (data.tags && data.tags.length > 0) {
+      await insertTags(data.tags, post.id, data.userId);
+    }
+    return post;
   }
   async deletePost(id: number) {
     return await this.prisma.post.update({

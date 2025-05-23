@@ -32,3 +32,10 @@ export const createInsertTags = (prisma: PrismaClient) => {
     }
   };
 };
+export const createDeleteTags = (prisma: PrismaClient) => {
+  return async (postId: number, userId: number): Promise<void> => {
+    await prisma.postTag.deleteMany({
+      where: { postId, userId },
+    });
+  };
+};

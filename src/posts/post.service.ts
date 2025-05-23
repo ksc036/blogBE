@@ -2,7 +2,6 @@ import { PostRepository } from "./post.repository";
 import { TYPES } from "../di/types";
 import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
 import { postLike } from "./typs";
-import { insertTags } from "../utils/tagHelper";
 
 type PostServiceDependencies = {
   [TYPES.PostRepository]: PostRepository;
@@ -23,7 +22,6 @@ export class PostService {
       data.userId,
       data.postUrl
     );
-    console.log("isExist :::", isExist);
     if (!isExist) {
       return await this.postRepository.createPost(data);
     }
@@ -89,12 +87,7 @@ export class PostService {
     if (!data.userId) {
       throw new Error("userId가 없습니다.");
     }
-    const post = await this.postRepository.updatePost(data);
-    if (data.tags && data.tags.length > 0) {
-      await insertTags(data.tags, post.id, data.userId);
-    }
-    return post;
-    // return this.postRepository.updatePost(data);
+    return await this.postRepository.updatePost(data);
   }
   async deletePost(id: number) {
     this.postRepository.deletePost(id);

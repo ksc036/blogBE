@@ -17,6 +17,6 @@ export interface UpdatePostDTO {
   desc: string;
   visibility: boolean;
   postUrl: string;
-  userId?: number;
+  userId: number;
   tags?: string[];
 }
