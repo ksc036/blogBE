@@ -25,11 +25,7 @@ export class PostService {
     );
     console.log("isExist :::", isExist);
     if (!isExist) {
-      const post = await this.postRepository.createPost(data);
-      if (data.tags && data.tags.length > 0) {
-        await insertTags(data.tags, post.id, data.userId);
-      }
-      return post;
+      return await this.postRepository.createPost(data);
     }
     //있으면
     const similarSlugs = await this.postRepository.findSimilarPostUrls(
@@ -49,11 +45,7 @@ export class PostService {
     }
     const uniqueSlug = `${baseSlug}-${maxSuffix || 1}`;
     data.postUrl = uniqueSlug;
-    const post = await this.postRepository.createPost(data);
-    if (data.tags && data.tags.length > 0) {
-      await insertTags(data.tags, post.id, data.userId);
-    }
-    return post;
+    return await this.postRepository.createPost(data);
   }
 
   async getAllPosts() {

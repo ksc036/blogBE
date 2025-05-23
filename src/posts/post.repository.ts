@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
 import { postLike } from "./typs";
+import { createInsertTags } from "../utils/tagHelper";
 
 export class PostRepository {
   private prisma: PrismaClient;
@@ -8,13 +9,14 @@ export class PostRepository {
     this.prisma = prisma;
   }
   async createPost(data: CreatePostDTO) {
-    // 자동 생성된 ID 가져오기
-    return await this.prisma.post.create({
+    const post = await this.prisma.post.create({
       data,
     });
-    // const postId = createdPost.id;
-    // console.log("postId", postId); // 생성된 ID 출력
-    // return postId;
+    const insertTags = createInsertTags(this.prisma);
+    if (data.tags && data.tags.length > 0 && data.userId) {
+      await insertTags(data.tags, post.id, data.userId);
+    }
+    return post;
   }
   async isExistPostUrl(userId: number, slug: string): Promise<boolean> {
     const existing = await this.prisma.post.findFirst({
