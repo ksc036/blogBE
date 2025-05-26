@@ -200,7 +200,7 @@ export class PostRepository {
       },
     });
   }
-  async getBlogPostByuserId(userId: number, mine: boolean) {
+  async getBlogPostByuserId(userId: number, mine: boolean, page: number) {
     console.log("getBlogPostByuserId userId : ", userId);
     return this.prisma.post.findMany({
       where: {
@@ -211,6 +211,8 @@ export class PostRepository {
       orderBy: {
         createdAt: "desc", // 생성일 기준 내림차순 정렬
       },
+      skip: (page - 1) * 10,
+      take: 10,
       include: {
         postTags: {
           include: {
@@ -227,6 +229,15 @@ export class PostRepository {
           where: { isDeleted: false },
           select: { id: true },
         },
+      },
+    });
+  }
+  async getTotalCount(userId: number, mine: boolean) {
+    return await this.prisma.post.count({
+      where: {
+        userId,
+        isDeleted: false,
+        ...(mine ? {} : { visibility: true }),
       },
     });
   }

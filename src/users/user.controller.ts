@@ -11,6 +11,7 @@ import {
 } from "./types";
 import { GetUserBlogProfileUseCase } from "../usecases/getUserBlogProfile.usecase";
 import { User } from "@prisma/client";
+import { log } from "console";
 type userControllerDependencies = {
   [TYPES.UserService]: UserService;
   [TYPES.GetUserBlogProfileUseCase]: GetUserBlogProfileUseCase;
@@ -125,13 +126,17 @@ export const userController = (deps: userControllerDependencies) => {
     },
     blogProfileBySubdomain: async (req: Request, res: Response) => {
       const { subdomain } = req.params;
+      // const { page } = req.query.page ? Number(req.query.page) : 1;
+      const { page } = req.query;
+      console.log("page ::: ", page);
       console.log("blogProfileBySubdomain token Payload", req.tokenPayload);
       const tokenUserId = (req.tokenPayload as any)?.id ?? undefined;
       console.log("tokenUserId", tokenUserId);
       console.log("subdomain", subdomain);
       const result = await getUserBlogProfileUseCase.execute(
         subdomain,
-        tokenUserId
+        tokenUserId,
+        page ? Number(page) : 1
       );
       res.json(result);
     },

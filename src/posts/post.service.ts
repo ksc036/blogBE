@@ -101,13 +101,20 @@ export class PostService {
   //   }
   //   return this.postRepository.findAllByUserId(userId);
   // }
-  async getBlogPostByuserId(userId: number, mine: boolean) {
-    const posts = await this.postRepository.getBlogPostByuserId(userId, mine);
+  async getBlogPostByuserId(userId: number, mine: boolean, page: number) {
+    const posts = await this.postRepository.getBlogPostByuserId(
+      userId,
+      mine,
+      page
+    );
     const postsWithCommentCount = posts.map((post) => ({
       ...post,
       commentCount: post.comments.length,
     }));
     return postsWithCommentCount;
+  }
+  async getTotalCount(userId: number, mine: boolean) {
+    return this.postRepository.getTotalCount(userId, mine);
   }
   async addPostLike(data: postLike) {
     return this.postRepository.addPostLike(data);
