@@ -14,7 +14,7 @@ export class GetUserBlogProfileUseCase {
     this.postService = deps[TYPES.PostService] as PostService;
   }
 
-  async execute(subdomain: string, tokenUserId?: number, page: number) {
+  async execute(subdomain: string, page: number, tokenUserId?: number) {
     // console.log("GetUserBlogProfileUseCase", subdomain, tokenUserId);
     const user = await this.userService.getBlogProfileBySubdomain(
       subdomain,

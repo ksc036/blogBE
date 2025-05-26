@@ -135,8 +135,8 @@ export const userController = (deps: userControllerDependencies) => {
       console.log("subdomain", subdomain);
       const result = await getUserBlogProfileUseCase.execute(
         subdomain,
-        tokenUserId,
-        page ? Number(page) : 1
+        page ? Number(page) : 1,
+        tokenUserId
       );
       res.json(result);
     },
