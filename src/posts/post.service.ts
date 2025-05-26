@@ -46,13 +46,13 @@ export class PostService {
     return await this.postRepository.createPost(data);
   }
 
-  async getAllPosts() {
-    const posts = await this.postRepository.findAllPosts();
-    const postsWithCommentCount = posts.map((post) => ({
+  async getAllPosts(page: number) {
+    const data = await this.postRepository.findAllPosts(page);
+    data.posts = data.posts.map((post) => ({
       ...post,
       commentCount: post.comments.length,
     }));
-    return postsWithCommentCount;
+    return data;
   }
   async getPost(id: number, userId?: number) {
     const post = await this.postRepository.findPost(id, userId);

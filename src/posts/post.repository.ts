@@ -55,28 +55,42 @@ export class PostRepository {
       })
       .then((results) => results.map((r) => r.postUrl));
   }
-  async findAllPosts() {
-    return this.prisma.post.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-      where: {
-        isDeleted: false,
-        visibility: true,
-      },
-      include: {
-        user: true,
-        comments: {
-          where: { isDeleted: false },
-          select: { id: true },
+  async findAllPosts(page: number) {
+    const pageSize = 20;
+
+    const [posts, totalPostLength] = await this.prisma.$transaction([
+      this.prisma.post.findMany({
+        orderBy: {
+          createdAt: "desc",
         },
-        _count: {
-          select: {
-            likes: true, // ✅ 좋아요 개수
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        where: {
+          isDeleted: false,
+          visibility: true,
+        },
+        include: {
+          user: true,
+          comments: {
+            where: { isDeleted: false },
+            select: { id: true },
+          },
+          _count: {
+            select: {
+              likes: true,
+            },
           },
         },
-      },
-    });
+      }),
+      this.prisma.post.count({
+        where: {
+          isDeleted: false,
+          visibility: true,
+        },
+      }),
+    ]);
+
+    return { posts, totalPostLength };
   }
 
   async findPost(id: number, userId?: number) {

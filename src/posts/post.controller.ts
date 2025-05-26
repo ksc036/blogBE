@@ -28,8 +28,10 @@ export const postController = (deps: postControllerDependencies) => {
       }
     },
     getAllPosts: async (req: Request, res: Response) => {
-      const posts = await postService.getAllPosts();
-      res.json(posts);
+      const { page } = req.query;
+      console.log("getAllPosts called page", page);
+      const data = await postService.getAllPosts(page ? Number(page) : 1);
+      res.json(data);
     },
     getPost: async (req: Request, res: Response) => {
       const { id } = req.params;
