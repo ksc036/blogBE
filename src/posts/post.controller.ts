@@ -14,7 +14,7 @@ export const postController = (deps: postControllerDependencies) => {
     createPost: async (req: Request, res: Response) => {
       console.log("createPost called ", req.body);
       try {
-        const userId = (req.tokenPayload as any).id; // ✅ id 꺼내기
+        const userId = (req.tokenPayload as any)?.id; // ✅ id 꺼내기
 
         const data: CreatePostDTO = req.body;
         console.log("req.body : ", req.body);
