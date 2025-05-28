@@ -58,6 +58,7 @@ export const postController = (deps: postControllerDependencies) => {
         // } = req.body;
         const data: UpdatePostDTO = {
           ...req.body,
+          id: Number(id),
           userId: (req.tokenPayload as any).id,
         };
         const post = await postTagUseCase.update(data);
