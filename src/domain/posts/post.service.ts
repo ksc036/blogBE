@@ -113,6 +113,24 @@ export class PostService {
     }));
     return postsWithCommentCount;
   }
+  async getBlogPostByTagAnduserId(
+    userId: number,
+    mine: boolean,
+    page: number,
+    tagIds: number[]
+  ) {
+    const data = await this.postRepository.getBlogPostByTagAnduserId(
+      userId,
+      mine,
+      page,
+      tagIds
+    );
+    data.posts = data.posts.map((post) => ({
+      ...post,
+      commentCount: post.comments.length,
+    }));
+    return data;
+  }
   async getTotalCount(userId: number, mine: boolean) {
     return this.postRepository.getTotalCount(userId, mine);
   }

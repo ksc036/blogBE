@@ -12,6 +12,7 @@ import { TagRepository } from "../domain/tags/tag.repository";
 // usecases
 import { GetUserBlogProfileUseCase } from "../usecases/getUserBlogProfile.usecase";
 import { PostTagUseCase } from "../usecases/postTag.usecase";
+import { GetUserBlogPostsByTagUseCase } from "../usecases/getUserBlogPostsByTags.usecase";
 
 const container = createContainer();
 
@@ -30,6 +31,9 @@ container.register({
     GetUserBlogProfileUseCase
   ).scoped(),
   [TYPES.PostTagUseCase]: asClass(PostTagUseCase).scoped(),
+  [TYPES.GetUserBlogPostsByTagsUseCase]: asClass(
+    GetUserBlogPostsByTagUseCase
+  ).scoped(), // Assuming this is the correct use case
 });
 
 export default container;

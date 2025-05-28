@@ -3,7 +3,7 @@ import { UserService } from "../domain/users/user.service";
 import { PostService } from "../domain/posts/post.service";
 import { TYPES } from "../di/types";
 import { TagService } from "../domain/tags/tag.service";
-type GetUserBlogProfileUseCaseeDependencies = {
+type GetUserBlogProfileUseCaseDependencies = {
   [TYPES.UserService]: UserService;
   [TYPES.PostService]: PostService;
   [TYPES.TagService]: TagService;
@@ -12,13 +12,18 @@ export class GetUserBlogProfileUseCase {
   private userService: UserService;
   private postService: PostService;
   private tagService: TagService;
-  constructor(deps: GetUserBlogProfileUseCaseeDependencies) {
+  constructor(deps: GetUserBlogProfileUseCaseDependencies) {
     this.userService = deps[TYPES.UserService] as UserService;
     this.postService = deps[TYPES.PostService] as PostService;
     this.tagService = deps[TYPES.TagService] as TagService;
   }
 
-  async execute(subdomain: string, page: number, tokenUserId?: number) {
+  async execute(
+    subdomain: string,
+    page: number,
+    tokenUserId?: number,
+    tagIds: number[] = []
+  ) {
     // console.log("GetUserBlogProfileUseCase", subdomain, tokenUserId);
     const user = await this.userService.getBlogProfileBySubdomain(
       subdomain,

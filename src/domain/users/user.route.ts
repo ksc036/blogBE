@@ -13,7 +13,7 @@ router.get(
   tokenSetting,
   api("blogProfileBySubdomain")
 );
-
+router.get("/blogPostsWithTag", tokenSetting, api("userPostsByTags"));
 router.put("/", authenticate, api("updateUser"));
 
 router.get("/social/google", api("googleLoginInit")); // /users/social/google 경로 처리

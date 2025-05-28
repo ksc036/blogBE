@@ -12,15 +12,20 @@ import {
 import { GetUserBlogProfileUseCase } from "../../usecases/getUserBlogProfile.usecase";
 import { User } from "@prisma/client";
 import { log } from "console";
+import { GetUserBlogPostsByTagUseCase } from "../../usecases/getUserBlogPostsByTags.usecase";
 type userControllerDependencies = {
   [TYPES.UserService]: UserService;
   [TYPES.GetUserBlogProfileUseCase]: GetUserBlogProfileUseCase;
+  [TYPES.GetUserBlogPostsByTagsUseCase]: GetUserBlogPostsByTagUseCase;
 };
 export const userController = (deps: userControllerDependencies) => {
   const userService = deps[TYPES.UserService] as UserService;
   const getUserBlogProfileUseCase = deps[
     TYPES.GetUserBlogProfileUseCase
   ] as GetUserBlogProfileUseCase;
+  const getUserBlogPostsByTagsUseCase = deps[
+    TYPES.GetUserBlogPostsByTagsUseCase
+  ] as GetUserBlogPostsByTagUseCase;
   return {
     getUsers: async (req: Request, res: Response) => {
       console.log("getUsers called");
@@ -126,7 +131,6 @@ export const userController = (deps: userControllerDependencies) => {
     },
     blogProfileBySubdomain: async (req: Request, res: Response) => {
       const { subdomain } = req.params;
-      // const { page } = req.query.page ? Number(req.query.page) : 1;
       const { page } = req.query;
       console.log("page ::: ", page);
       console.log("blogProfileBySubdomain token Payload", req.tokenPayload);
@@ -137,6 +141,30 @@ export const userController = (deps: userControllerDependencies) => {
         subdomain,
         page ? Number(page) : 1,
         tokenUserId
+      );
+      res.json(result);
+    },
+    userPostsByTags: async (req: Request, res: Response) => {
+      console.log("userPostsByTags called", req.url);
+      const { page = 1, canonicalTagIds, userId } = req.query;
+      // const { userId } = req.params;
+      console.log("userId::::::::::", userId);
+      // const { searchParams } = new URL(req.url);
+      const tagIds: number[] = Array.isArray(canonicalTagIds)
+        ? canonicalTagIds.map(Number)
+        : canonicalTagIds
+        ? [Number(canonicalTagIds)]
+        : [];
+      console.log("canonicalTagIds::::::::::::::::::", tagIds);
+      console.log("page ::: ", page);
+      console.log("blogProfileBySubdomain token Payload", req.tokenPayload);
+      const tokenUserId = (req.tokenPayload as any)?.id ?? undefined;
+      console.log("tokenUserId", tokenUserId);
+      const result = await getUserBlogPostsByTagsUseCase.execute(
+        Number(userId),
+        tokenUserId,
+        page ? Number(page) : 1,
+        tagIds
       );
       res.json(result);
     },

@@ -10,4 +10,5 @@ export const TYPES = {
   // ✅ 추가된 UseCase
   GetUserBlogProfileUseCase: Symbol.for("GetUserBlogProfileUseCase"),
   PostTagUseCase: Symbol.for("PostTagUseCase"),
+  GetUserBlogPostsByTagsUseCase: Symbol.for("getUserBlogPostsByTagsUseCase"),
 };
