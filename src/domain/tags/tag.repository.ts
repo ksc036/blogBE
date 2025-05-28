@@ -44,7 +44,7 @@ export class TagRepository {
           userId,
           postId,
           tagId: tag.id,
-          canonicalTagId: canonical.id, // 💡 이걸 PostTag에 저장하도록 모델에 포함했을 경우
+          // canonicalTagId: canonical.id, // 💡 이걸 PostTag에 저장하도록 모델에 포함했을 경우
         },
       });
     }
