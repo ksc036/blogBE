@@ -61,9 +61,11 @@ export const postController = (deps: postControllerDependencies) => {
           id: Number(id),
           userId: (req.tokenPayload as any).id,
         };
+
         if (!data.id) {
           return res.status(400).json({ error: "게시글 ID가 필요합니다." });
         }
+
         const post = await postTagUseCase.update(data);
         console.log("postTagUseCase.update post", post);
         // const post = await postService.updatePost({
