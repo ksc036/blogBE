@@ -1,7 +1,7 @@
 import express from "express";
 import { makeInvoker } from "awilix-express";
 import { commentController } from "./comment.controller";
-import { authenticate } from "../middlewares/authMiddleware";
+import { authenticate } from "../../middlewares/authMiddleware";
 
 const router = express.Router();
 const api = makeInvoker(commentController);

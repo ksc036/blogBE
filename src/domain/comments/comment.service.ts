@@ -1,4 +1,4 @@
-import { TYPES } from "../di/types";
+import { TYPES } from "../../di/types";
 import {
   CreateCommentDTO,
   DeleteCommentDTO,

@@ -1,6 +1,6 @@
 // usecases/getUserBlogProfile.usecase.ts
-import { UserService } from "../users/user.service";
-import { PostService } from "../posts/post.service";
+import { UserService } from "../domain/users/user.service";
+import { PostService } from "../domain/posts/post.service";
 import { TYPES } from "../di/types";
 type GetUserBlogProfileUseCaseeDependencies = {
   [TYPES.UserService]: UserService;

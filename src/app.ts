@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
 import { scopePerRequest } from "awilix-express";
 import container from "./di/container";
-import userRouter from "./users/user.route";
-import postRouter from "./posts/post.route";
-import mainRouter from "./routes/main.route";
-import commentRouter from "./comments/comment.route";
+import userRouter from "./domain/users/user.route";
+import postRouter from "./domain/posts/post.route";
+import mainRouter from "./mainRoutes/main.route";
+import commentRouter from "./domain/comments/comment.route";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";

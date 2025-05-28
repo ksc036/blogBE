@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TYPES } from "../di/types";
+import { TYPES } from "../../di/types";
 import { CommentService } from "./comment.service";
 import {
   CreateCommentDTO,

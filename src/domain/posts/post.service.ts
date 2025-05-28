@@ -1,5 +1,5 @@
 import { PostRepository } from "./post.repository";
-import { TYPES } from "../di/types";
+import { TYPES } from "../../di/types";
 import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
 import { postLike } from "./typs";
 

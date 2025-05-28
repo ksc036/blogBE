@@ -1,7 +1,7 @@
 import axios from "axios";
-import { TYPES } from "../di/types";
+import { TYPES } from "../../di/types";
 import { UserRepository } from "./user.repository";
-import { dbUserInfo, followUserDto, ssoUserInfo, updateUserDto } from "./types";
+import { followUserDto, ssoUserInfo, updateUserDto } from "./types";
 import { User } from "@prisma/client";
 export class UserService {
   private userRepository: UserRepository;

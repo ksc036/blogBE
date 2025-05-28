@@ -19,16 +19,18 @@ log404-server/
 ├── prisma/              # Prisma 스키마 및 마이그레이션 파일
 ├── src/                 # 애플리케이션 소스 코드
 src/
-|    ├── comments/       # 댓글 기능 관련 컨트롤러, 서비스, 라우터, 모델, DTO 등
+|    ├── domain/       # domain별 폴더더
+│    │   ├── posts/     # 게시글 관련 로직 (CRUD, 모델, 라우터 등)
+│    │   ├── users/     # 사용자 기능 관련 모듈 (CRUD, 인증 등)
+│    │   ├── comments/  # 댓글 기능 관련 모듈
+│    │   ├── tags/      # 태그 기능 관련 모듈
 |    ├── di/             # 의존성 주입 설정 (컨테이너, 타입 정의 등)
 |    ├── middlewares/    # 공통 미들웨어 (인증, 토큰 설정 등)
-|    ├── posts/          # 게시글 관련 로직 (CRUD, 모델, 라우터 등)
 |    ├── prisma/         # Prisma 클라이언트 초기화
 |    ├── routes/         # 공통 라우터 엔트리포인트 설정
 |    ├── s3/             # AWS S3 관련 설정 및 클라이언트
 |    ├── types/          # 커스텀 타입 정의 (특히 express 타입 확장)
 |    ├── usecases/       # 비즈니스 유즈케이스 단위의 로직 분리
-|    ├── users/          # 사용자 기능 관련 모듈 (CRUD, 인증 등)
 |    └── utils/          # 공통 유틸 함수 (JWT 처리, 태그 헬퍼 등)
 ├── dockerfile.dev       # 개발용 Dockerfile
 ├── dockerfile.prod      # 프로덕션용 Dockerfile

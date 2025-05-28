@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
 import { postLike } from "./typs";
-import { createDeleteTags, createInsertTags } from "../utils/tagHelper";
+import { createDeleteTags, createInsertTags } from "../../utils/tagHelper";
 import { CreatePostSchema } from "./post.model";
 
 export class PostRepository {

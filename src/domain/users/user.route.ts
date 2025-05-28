@@ -1,9 +1,8 @@
 import express from "express";
-import { makeInvoker } from "awilix-express"; // 🔥 추가
+import { makeInvoker } from "awilix-express";
 import { userController } from "./user.controller";
-import container from "../di/container"; // 🔥 추가
-import { authenticate } from "../middlewares/authMiddleware";
-import { tokenSetting } from "../middlewares/tokenSettingMiddleware";
+import { authenticate } from "../../middlewares/authMiddleware";
+import { tokenSetting } from "../../middlewares/tokenSettingMiddleware";
 
 const router = express.Router();
 const api = makeInvoker(userController);

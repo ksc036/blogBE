@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TYPES } from "../di/types";
+import { TYPES } from "../../di/types";
 import { PostService } from "./post.service";
 import { CreatePostDTO } from "./post.dto";
 import { postLike } from "./typs";

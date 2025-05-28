@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { TYPES } from "../di/types";
+import { TYPES } from "../../di/types";
 import { UserService } from "./user.service";
-import { generateToken, verifyToken } from "../utils/jwt";
+import { generateToken, verifyToken } from "../../utils/jwt";
 import {
   dbUserInfo,
   followUserDto,
@@ -9,7 +9,7 @@ import {
   tokenPayload,
   updateUserDto,
 } from "./types";
-import { GetUserBlogProfileUseCase } from "../usecases/getUserBlogProfile.usecase";
+import { GetUserBlogProfileUseCase } from "../../usecases/getUserBlogProfile.usecase";
 import { User } from "@prisma/client";
 import { log } from "console";
 type userControllerDependencies = {
