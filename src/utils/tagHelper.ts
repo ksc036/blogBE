@@ -39,3 +39,7 @@ export const createDeleteTags = (prisma: PrismaClient) => {
     });
   };
 };
+
+export const normalize = (name: string): string => {
+  return name.toLowerCase().replace(/\s+/g, "-"); // 공백을 하이픈으로 변환
+};

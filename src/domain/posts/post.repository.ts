@@ -15,15 +15,15 @@ export class PostRepository {
     if (!model.success) {
       throw new Error("유효하지 않은 게시글 데이터입니다.");
     }
-    const post = await this.prisma.post.create({
+    return await this.prisma.post.create({
       data: model.data,
     });
-    console.log("post created", post);
-    const insertTags = createInsertTags(this.prisma);
-    if (data.tags && data.tags.length > 0 && data.userId) {
-      await insertTags(data.tags, post.id, data.userId);
-    }
-    return post;
+    // console.log("post created", post);
+    // const insertTags = createInsertTags(this.prisma);
+    // if (data.tags && data.tags.length > 0 && data.userId) {
+    //   await insertTags(data.tags, post.id, data.userId);
+    // }
+    // return post;
   }
   async isExistPostUrl(userId: number, slug: string): Promise<boolean> {
     const existing = await this.prisma.post.findFirst({
@@ -180,12 +180,12 @@ export class PostRepository {
         postUrl,
       },
     });
-    const deleteTags = createDeleteTags(this.prisma);
-    await deleteTags(post.id, data.userId);
-    const insertTags = createInsertTags(this.prisma);
-    if (data.tags && data.tags.length > 0) {
-      await insertTags(data.tags, post.id, data.userId);
-    }
+    // const deleteTags = createDeleteTags(this.prisma);
+    // await deleteTags(post.id, data.userId);
+    // const insertTags = createInsertTags(this.prisma);
+    // if (data.tags && data.tags.length > 0) {
+    //   await insertTags(data.tags, post.id, data.userId);
+    // }
     return post;
   }
   async deletePost(id: number) {

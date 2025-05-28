@@ -103,7 +103,15 @@ model PostLike {
 model Tag {
   id    Int    @id @default(autoincrement())
   name  String @unique
+  canonicalTagId  Int?
+  canonical       CanonicalTag?  @relation(fields: [canonicalTagId], references: [id])
   posts PostTag[]
+}
+
+model CanonicalTag {              // k8s, mysql 처럼 '묶음' 단위
+  id             Int      @id @default(autoincrement())
+  normalizedName String   @unique    // 예: k8s, mysql
+  tags           Tag[]
 }
 
 model PostTag {
@@ -118,3 +126,4 @@ model PostTag {
 
   @@unique([userId, postId, tagId]) // 중복 방지
 }
+

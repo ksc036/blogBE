@@ -3,24 +3,27 @@ import { TYPES } from "../../di/types";
 import { PostService } from "./post.service";
 import { CreatePostDTO } from "./post.dto";
 import { postLike } from "./typs";
+import { PostTagUseCase } from "../../usecases/postTag.usecase";
 
 type postControllerDependencies = {
   [TYPES.PostService]: PostService;
+  [TYPES.PostTagUseCase]: PostTagUseCase;
 };
 export const postController = (deps: postControllerDependencies) => {
   const postService = deps[TYPES.PostService] as PostService;
-
+  const postTagUseCase = deps[TYPES.PostTagUseCase] as PostTagUseCase;
   return {
     createPost: async (req: Request, res: Response) => {
       console.log("createPost called ", req.body);
       try {
         const userId = (req.tokenPayload as any)?.id; // ✅ id 꺼내기
 
-        const data: CreatePostDTO = req.body;
-        console.log("req.body : ", req.body);
-        console.log("data", data);
-        data.userId = userId;
-        const post = await postService.createPost(data);
+        const data: CreatePostDTO = {
+          ...req.body,
+          userId,
+        };
+        const post = await postTagUseCase.create(data);
+        // const post = await postService.createPost(data);
         res.status(201).json({ post });
       } catch (error) {
         console.error("Error creating post:", error);
@@ -64,7 +67,6 @@ export const postController = (deps: postControllerDependencies) => {
           tags,
           userId: (req.tokenPayload as any).id,
         });
-        console.log("post", post);
         res.status(201).json({ post });
       } catch (error) {
         res.status(500).json({ error: "게시글 작성중 문제 발생" });

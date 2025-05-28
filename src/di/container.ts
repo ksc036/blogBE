@@ -7,8 +7,11 @@ import { PostRepository } from "../domain/posts/post.repository";
 import { PostService } from "../domain/posts/post.service";
 import { CommentService } from "../domain/comments/comment.service";
 import { CommentRepository } from "../domain/comments/comment.repository";
+import { TagService } from "../domain/tags/tag.service";
+import { TagRepository } from "../domain/tags/tag.repository";
 // usecases
 import { GetUserBlogProfileUseCase } from "../usecases/getUserBlogProfile.usecase";
+import { PostTagUseCase } from "../usecases/postTag.usecase";
 
 const container = createContainer();
 
@@ -20,11 +23,13 @@ container.register({
   [TYPES.PostRepository]: asClass(PostRepository).scoped(),
   [TYPES.CommentService]: asClass(CommentService).scoped(),
   [TYPES.CommentRepository]: asClass(CommentRepository).scoped(),
-
+  [TYPES.TagService]: asClass(TagService).scoped(),
+  [TYPES.TagRepository]: asClass(TagRepository).scoped(),
   // UseCases
   [TYPES.GetUserBlogProfileUseCase]: asClass(
     GetUserBlogProfileUseCase
   ).scoped(),
+  [TYPES.PostTagUseCase]: asClass(PostTagUseCase).scoped(),
 });
 
 export default container;
