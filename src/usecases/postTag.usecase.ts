@@ -22,7 +22,7 @@ export class PostTagUseCase {
     }
     return this.postService.createPost(data);
   }
-  async delete(data: UpdatePostDTO) {
+  async update(data: UpdatePostDTO) {
     const post = await this.postService.updatePost(data);
     this.tagService.deleteTag(post.id, data.userId);
     if (data.tags && data.tags.length > 0 && data.userId) {

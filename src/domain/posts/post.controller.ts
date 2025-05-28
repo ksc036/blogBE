@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { TYPES } from "../../di/types";
 import { PostService } from "./post.service";
-import { CreatePostDTO } from "./post.dto";
+import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
 import { postLike } from "./typs";
 import { PostTagUseCase } from "../../usecases/postTag.usecase";
 
@@ -47,26 +47,32 @@ export const postController = (deps: postControllerDependencies) => {
       const { id } = req.params;
       console.log("updatePost called ", req.body);
       try {
-        const {
-          title,
-          content,
-          thumbnailUrl,
-          desc,
-          visibility,
-          postUrl,
-          tags,
-        } = req.body;
-        const post = await postService.updatePost({
-          id: Number(id),
-          title,
-          content,
-          thumbnailUrl,
-          desc,
-          visibility,
-          postUrl,
-          tags,
+        // const {
+        //   title,
+        //   content,
+        //   thumbnailUrl,
+        //   desc,
+        //   visibility,
+        //   postUrl,
+        //   tags,
+        // } = req.body;
+        const data: UpdatePostDTO = {
+          ...req.body,
           userId: (req.tokenPayload as any).id,
-        });
+        };
+        const post = await postTagUseCase.update(data);
+        console.log("postTagUseCase.update post", post);
+        // const post = await postService.updatePost({
+        //   id: Number(id),
+        //   title,
+        //   content,
+        //   thumbnailUrl,
+        //   desc,
+        //   visibility,
+        //   postUrl,
+        //   tags,
+        //   userId: (req.tokenPayload as any).id,
+        // });
         res.status(201).json({ post });
       } catch (error) {
         res.status(500).json({ error: "게시글 작성중 문제 발생" });

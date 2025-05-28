@@ -26,5 +26,6 @@ router.put("/:id", authenticate, api("updatePost"));
 router.post("/:id/like", authenticate, api("likePost"));
 router.delete("/:id/like", authenticate, api("unLikePost"));
 
-router.get("/:subdomain/:id", tokenSetting, api("getPostBySubdomainAndId"));
+//이거 부르는곳 있나?
+// router.get("/:subdomain/:id", tokenSetting, api("getPostBySubdomainAndId"));
 export default router;
