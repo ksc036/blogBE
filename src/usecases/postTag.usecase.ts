@@ -20,7 +20,7 @@ export class PostTagUseCase {
     if (data.tags && data.tags.length > 0 && data.userId) {
       await this.tagService.insertTags(data.tags, post.id, data.userId);
     }
-    return this.postService.createPost(data);
+    return post;
   }
   async update(data: UpdatePostDTO) {
     const post = await this.postService.updatePost(data);
