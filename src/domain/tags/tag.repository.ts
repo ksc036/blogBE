@@ -55,4 +55,23 @@ export class TagRepository {
       where: { postId, userId },
     });
   }
+  async findAllTagsByUserId(userId: number, mine: boolean) {
+    return await this.prisma.postTag.findMany({
+      where: {
+        userId,
+        post: mine
+          ? undefined
+          : {
+              visibility: true,
+            },
+      },
+      include: {
+        tag: {
+          include: {
+            canonical: true,
+          },
+        },
+      },
+    });
+  }
 }
