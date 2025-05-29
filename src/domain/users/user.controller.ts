@@ -64,7 +64,17 @@ export const userController = (deps: userControllerDependencies) => {
           email: dbUserInfo.email,
           name: dbUserInfo.name,
         });
-
+        if (process.env.NODE_ENV === "localhost") {
+          res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "lax", // cross-site 허용
+            path: "/",
+            maxAge: 15 * 1000 * 60 * 60 * 24,
+          });
+          // 로컬 프런트페이지
+          return res.redirect(`http://localhost:3000`);
+        }
         // 여기서 세션 생성하거나 JWT 발급
         res.cookie("token", token, {
           httpOnly: true,
@@ -74,7 +84,7 @@ export const userController = (deps: userControllerDependencies) => {
           path: "/",
           maxAge: 15 * 1000 * 60 * 60 * 24,
         }); // 쿠키에 JWT 저장
-        res.redirect(
+        return res.redirect(
           `http://${dbUserInfo.subdomain}.${process.env.DOMAIN_NAME}`
         ); // 로그인 후 프론트로 이동
       } catch (error) {
