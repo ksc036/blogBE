@@ -1,7 +1,7 @@
 import { PostRepository } from "./post.repository";
 import { TYPES } from "../../di/types";
 import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
-import { postLike } from "./typs";
+import { postLike, savePlanDto, saveReviewInstance } from "./typs";
 
 type PostServiceDependencies = {
   [TYPES.PostRepository]: PostRepository;
@@ -144,5 +144,49 @@ export class PostService {
   async getPostId(subdomain: string, id: string) {
     console.log("getPostId Called");
     return this.postRepository.getPostId(subdomain, id);
+  }
+  async getReviewPosts(userId: number) {
+    return this.postRepository.getReviewPosts(userId);
+  }
+  async getAllReviewInstanceWithPost(userId: number) {
+    const reviewInstances: any =
+      await this.postRepository.getAllReviewInstanceWithPost(userId);
+    console.log("reviewInstances", reviewInstances);
+    const grouped: any[] = [];
+    const seenPostIds = new Set<number>();
+
+    if (!reviewInstances || reviewInstances.length === 0) return grouped;
+
+    reviewInstances.forEach((instance: any) => {
+      const existingGroup = grouped.find((g) => g.postId === instance.postId);
+
+      const instanceInfo = {
+        id: instance.id,
+        status: instance.status,
+        scheduledDate: instance.scheduledDate,
+        reviewedAt: instance.reviewedAt,
+      };
+
+      if (existingGroup) {
+        existingGroup.reviewInstances.push(instanceInfo);
+      } else {
+        grouped.push({
+          postId: instance.postId,
+          post: instance.post,
+          reviewInstances: [instanceInfo],
+        });
+        seenPostIds.add(instance.postId);
+      }
+    });
+    return grouped;
+  }
+  async getUserPlanList(userId: number) {
+    return this.postRepository.getUserPlanList(userId);
+  }
+  async saveReviewPlan(userId: number, data: savePlanDto) {
+    return this.postRepository.saveReviewPlan(userId, data);
+  }
+  async saveReviewInstance(userId: number, data: saveReviewInstance) {
+    return this.postRepository.saveReviewInstance(userId, data);
   }
 }

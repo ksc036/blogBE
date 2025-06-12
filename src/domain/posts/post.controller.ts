@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { TYPES } from "../../di/types";
 import { PostService } from "./post.service";
 import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
-import { postLike } from "./typs";
+import { postLike, savePlanDto, saveReviewInstance } from "./typs";
 import { PostTagUseCase } from "../../usecases/postTag.usecase";
 
 type postControllerDependencies = {
@@ -139,6 +139,41 @@ export const postController = (deps: postControllerDependencies) => {
       const postId = postIdResult;
       const post = await postService.getPost(Number(postId), userId);
       res.json(post);
+    },
+    getReviewPosts: async (req: Request, res: Response) => {
+      const userId = (req.tokenPayload as any).id;
+      const reviewPosts = await postService.getReviewPosts(userId);
+      res.json(reviewPosts);
+    },
+    reviewStatus: async (req: Request, res: Response) => {
+      const userId = (req.tokenPayload as any).id;
+      const postWithInstance = await postService.getAllReviewInstanceWithPost(
+        userId
+      );
+      res.json(postWithInstance);
+    },
+    getUserPlanList: async (req: Request, res: Response) => {
+      const userId = (req.tokenPayload as any).id;
+      console.log("getUserPlanList");
+      const planList = await postService.getUserPlanList(userId);
+      console.log("getUserPlanList planList", planList);
+      res.json(planList);
+    },
+    addReviewPlan: async (req: Request, res: Response) => {
+      const userId = (req.tokenPayload as any).id;
+      console.log(req.body);
+
+      const data: savePlanDto = req.body;
+      await postService.saveReviewPlan(userId, data);
+      res.status(201).end();
+    },
+    addReviewInstance: async (req: Request, res: Response) => {
+      const userId = (req.tokenPayload as any).id;
+      console.log("addReviewInstance", req.body);
+
+      const data: saveReviewInstance = req.body;
+      await postService.saveReviewInstance(userId, data);
+      res.status(201).end();
     },
   };
 };

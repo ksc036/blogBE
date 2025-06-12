@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
-import { postLike } from "./typs";
+import { postLike, savePlanDto, saveReviewInstance } from "./typs";
 import { createDeleteTags, createInsertTags } from "../../utils/tagHelper";
 import { CreatePostSchema } from "./post.model";
 import _ from "lodash";
+import { ReviewStatus } from "@prisma/client";
 
 export class PostRepository {
   private prisma: PrismaClient;
@@ -102,6 +103,11 @@ export class PostRepository {
       },
 
       include: {
+        ...(userId
+          ? {
+              reviewInstances: true,
+            }
+          : {}),
         postTags: {
           include: {
             tag: true, // ← tag를 postTags에서 조인
@@ -400,5 +406,99 @@ export class PostRepository {
     });
 
     return post?.id ?? null; // 없으면 null 반환
+  }
+  async getReviewPosts(userId: number) {
+    const now = new Date();
+    const kstNow = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+
+    const kstStartOfDay = new Date(
+      kstNow.getFullYear(),
+      kstNow.getMonth(),
+      kstNow.getDate(),
+      0,
+      0,
+      0
+    );
+    const kstEndOfDay = new Date(
+      kstNow.getFullYear(),
+      kstNow.getMonth(),
+      kstNow.getDate(),
+      23,
+      59,
+      59,
+      999
+    );
+    const utcStart = new Date(kstStartOfDay.getTime() - 9 * 60 * 60 * 1000);
+    const utcEnd = new Date(kstEndOfDay.getTime() - 9 * 60 * 60 * 1000);
+
+    return await this.prisma.reviewInstance.findMany({
+      where: {
+        scheduledDate: {
+          gte: utcStart,
+          lte: utcEnd,
+        },
+        userId: userId, // 필요 시
+      },
+      include: {
+        post: true,
+      },
+    });
+  }
+  async getAllReviewInstanceWithPost(userId: number) {
+    return await this.prisma.reviewInstance.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        post: true, // Post 데이터 포함
+      },
+    });
+  }
+  async getUserPlanList(userId: number) {
+    return await this.prisma.reviewPlan.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+  }
+  async saveReviewPlan(userId: number, dataDto: savePlanDto) {
+    return await this.prisma.reviewPlan.create({
+      data: {
+        userId: userId,
+        reviewDays: dataDto.repeatDays,
+        name: dataDto.planName,
+      },
+    });
+  }
+  async saveReviewInstance(userId: number, dataDto: saveReviewInstance) {
+    const reviewPlan = await this.prisma.reviewPlan.findUnique({
+      where: { id: dataDto.planId },
+    });
+    console.log("reviewPlan :::", reviewPlan);
+    // if (!reviewPlan) {
+    //   return res.status(404).json({ message: "ReviewPlan을 찾을 수 없습니다." });
+    // }
+
+    const reviewDays: number[] = reviewPlan?.reviewDays as number[];
+    const today = new Date();
+
+    // 2️⃣ 각 day 만큼 더한 scheduledDate로 instance 생성
+    const instancesToCreate = reviewDays.map((day) => {
+      const scheduledDate = new Date(today);
+      scheduledDate.setDate(today.getDate() + day);
+
+      return {
+        reviewPlanId: dataDto.planId,
+        postId: dataDto.postId,
+        userId: userId,
+        scheduledDate: scheduledDate,
+        status: ReviewStatus.PENDING,
+      };
+    });
+
+    // 3️⃣ createMany 사용 (트랜잭션 아님) 또는 Promise.all(create)
+    await this.prisma.reviewInstance.createMany({
+      data: instancesToCreate,
+    });
   }
 }

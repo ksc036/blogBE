@@ -17,12 +17,16 @@ router.get("/", api("getAllPosts"));
 // 3. 게시글 삭제
 router.delete("/", authenticate, api("deletePost"));
 
+router.get("/review", authenticate, api("getReviewPosts"));
+router.get("/reviewStatus", authenticate, api("reviewStatus"));
+router.get("/getUserPlanList", authenticate, api("getUserPlanList"));
+router.post("/reviewPlan", authenticate, api("addReviewPlan"));
+router.post("/reviewInstance", authenticate, api("addReviewInstance"));
 // 4. 게시글 단건 조회
 router.get("/:id", tokenSetting, api("getPost"));
 
 // 5. 게시글 수정
 router.put("/:id", authenticate, api("updatePost"));
-
 router.post("/:id/like", authenticate, api("likePost"));
 router.delete("/:id/like", authenticate, api("unLikePost"));
 

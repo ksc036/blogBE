@@ -36,6 +36,8 @@ model User {
   following     UserFollow[] @relation("FollowingRelation")
   followers     UserFollow[] @relation("FollowerRelation")
   postTags PostTag[] 
+  reviewPlan ReviewPlan[]
+  reviewInstances ReviewInstance[]
 }
 model UserFollow {
   id           Int      @id @default(autoincrement())
@@ -63,8 +65,9 @@ model Post {
   userId   Int  @default(1)
   comments     Comment[]
   likes        PostLike[]     @relation("PostLikes")
-   postTags PostTag[]
-   @@unique([userId, postUrl])
+  postTags PostTag[]
+  @@unique([userId, postUrl])
+  reviewInstances ReviewInstance[]
 }
 
 model Comment {
@@ -127,3 +130,40 @@ model PostTag {
   @@unique([userId, postId, tagId]) // 중복 방지
 }
 
+model ReviewPlan {
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  reviewDays  Json     // [1,2,4,8,23] 처럼 배열로 저장
+  name        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  reviewInstances ReviewInstance[]
+}
+
+model ReviewInstance {
+  id             Int      @id @default(autoincrement())
+  reviewPlan     ReviewPlan @relation(fields: [reviewPlanId], references: [id])
+  reviewPlanId   Int
+  user           User       @relation(fields: [userId], references: [id])
+  userId         Int
+  post           Post       @relation(fields: [postId], references: [id])
+  postId         Int
+
+  scheduledDate  DateTime  // 복습 예정일 (날짜만 쓸 수도 있고 full DateTime도 가능)
+  status         ReviewStatus @default(PENDING)
+  reviewedAt     DateTime?   // 실제 복습한 시간 (null이면 아직 안 함)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId, scheduledDate]) // 오늘 리뷰할 것 빠르게 찾을 때 유용
+}
+
+enum ReviewStatus {
+  PENDING   // 아직 복습 안 함 (예정 상태)
+  DONE      // 복습 완료 (O)
+  READY   // 오늘 해야함
+  MISSED    // 날짜 지났는데 안 함 (X)
+}
