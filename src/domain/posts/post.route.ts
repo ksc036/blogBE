@@ -22,6 +22,7 @@ router.get("/reviewStatus", authenticate, api("reviewStatus"));
 router.get("/getUserPlanList", authenticate, api("getUserPlanList"));
 router.post("/reviewPlan", authenticate, api("addReviewPlan"));
 router.post("/reviewInstance", authenticate, api("addReviewInstance"));
+router.put("/reviewSuccess", authenticate, api("reviewSuccess"));
 // 4. 게시글 단건 조회
 router.get("/:id", tokenSetting, api("getPost"));
 

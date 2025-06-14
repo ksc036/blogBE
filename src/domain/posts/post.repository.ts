@@ -437,7 +437,8 @@ export class PostRepository {
           gte: utcStart,
           lte: utcEnd,
         },
-        userId: userId, // 필요 시
+        userId: userId,
+        status: ReviewStatus.PENDING,
       },
       include: {
         post: true,
@@ -499,6 +500,18 @@ export class PostRepository {
     // 3️⃣ createMany 사용 (트랜잭션 아님) 또는 Promise.all(create)
     await this.prisma.reviewInstance.createMany({
       data: instancesToCreate,
+    });
+  }
+  async reviewSuccess(userId: number, reviewInstanceId: number) {
+    return await this.prisma.reviewInstance.update({
+      where: {
+        id: reviewInstanceId,
+        userId,
+      },
+      data: {
+        status: ReviewStatus.DONE,
+        reviewedAt: new Date(),
+      },
     });
   }
 }

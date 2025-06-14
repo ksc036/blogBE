@@ -175,5 +175,13 @@ export const postController = (deps: postControllerDependencies) => {
       await postService.saveReviewInstance(userId, data);
       res.status(201).end();
     },
+    reviewSuccess: async (req: Request, res: Response) => {
+      const userId = (req.tokenPayload as any).id;
+      console.log("reviewSuccess", req.body);
+
+      const instanceId: number = req.body.reviewInstanceId;
+      const result = await postService.reviewSuccess(userId, instanceId);
+      res.status(201).json(result);
+    },
   };
 };
