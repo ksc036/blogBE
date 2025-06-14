@@ -15,6 +15,11 @@ jobs:
     outputs:
       tag: ${{ steps.extract_tag.outputs.TAG }}
     steps:
+      - name: Check Docker version
+        run: |
+          docker --version
+          docker info
+
       - name: Checkout code
         uses: actions/checkout@v3
 
