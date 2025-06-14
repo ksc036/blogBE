@@ -25,6 +25,7 @@
     "jsonwebtoken": "^9.0.2",
     "loadsh": "^0.0.4",
     "lodash": "^4.17.21",
+    "node-cron": "^4.1.0",
     "zod": "^3.25.24"
   },
   "devDependencies": {
