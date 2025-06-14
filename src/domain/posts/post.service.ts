@@ -186,6 +186,9 @@ export class PostService {
   async saveReviewPlan(userId: number, data: savePlanDto) {
     return this.postRepository.saveReviewPlan(userId, data);
   }
+  async deleteReviewPlan(userId: number, reviewPlanId: number) {
+    return this.postRepository.deleteReviewPlan(userId, reviewPlanId);
+  }
   async saveReviewInstance(userId: number, data: saveReviewInstance) {
     return this.postRepository.saveReviewInstance(userId, data);
   }

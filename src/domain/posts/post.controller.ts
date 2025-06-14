@@ -164,8 +164,17 @@ export const postController = (deps: postControllerDependencies) => {
       console.log(req.body);
 
       const data: savePlanDto = req.body;
-      await postService.saveReviewPlan(userId, data);
-      res.status(201).end();
+      const result = await postService.saveReviewPlan(userId, data);
+      res.status(201).json(result);
+    },
+    deleteReviewPlan: async (req: Request, res: Response) => {
+      const userId = (req.tokenPayload as any).id;
+      const reviewPlanId = req.query.id;
+      const result = await postService.deleteReviewPlan(
+        userId,
+        Number(reviewPlanId)
+      );
+      res.status(201).json(result);
     },
     addReviewInstance: async (req: Request, res: Response) => {
       const userId = (req.tokenPayload as any).id;

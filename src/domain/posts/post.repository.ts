@@ -471,6 +471,14 @@ export class PostRepository {
       },
     });
   }
+  async deleteReviewPlan(userId: number, reviewPlanId: number) {
+    return await this.prisma.reviewPlan.delete({
+      where: {
+        userId: userId,
+        id: reviewPlanId,
+      },
+    });
+  }
   async saveReviewInstance(userId: number, dataDto: saveReviewInstance) {
     const reviewPlan = await this.prisma.reviewPlan.findUnique({
       where: { id: dataDto.planId },
