@@ -3,7 +3,7 @@ import { CreatePostDTO, UpdatePostDTO } from "./post.dto";
 import { postLike, savePlanDto, saveReviewInstance } from "./typs";
 import { createDeleteTags, createInsertTags } from "../../utils/tagHelper";
 import { CreatePostSchema } from "./post.model";
-import _ from "lodash";
+import _, { includes } from "lodash";
 import { ReviewStatus } from "@prisma/client";
 
 export class PostRepository {
@@ -441,7 +441,15 @@ export class PostRepository {
         status: ReviewStatus.PENDING,
       },
       include: {
-        post: true,
+        post: {
+          include: {
+            postTags: {
+              include: {
+                tag: true,
+              },
+            },
+          },
+        },
       },
     });
   }
@@ -451,7 +459,15 @@ export class PostRepository {
         userId: userId,
       },
       include: {
-        post: true, // Post 데이터 포함
+        post: {
+          include: {
+            postTags: {
+              include: {
+                tag: true,
+              },
+            },
+          },
+        },
       },
     });
   }
