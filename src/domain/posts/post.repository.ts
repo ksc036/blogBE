@@ -409,28 +409,41 @@ export class PostRepository {
   }
   async getReviewPosts(userId: number) {
     const now = new Date();
-    const kstNow = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-
-    const kstStartOfDay = new Date(
-      kstNow.getFullYear(),
-      kstNow.getMonth(),
-      kstNow.getDate(),
-      0,
-      0,
-      0
+    const nowInKST = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+    // const kstNow = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+    const kstYear = nowInKST.getFullYear();
+    const kstMonth = nowInKST.getMonth();
+    const kstDate = nowInKST.getDate();
+    // const kstStart = new Date(Date.UTC(kstYear, kstMonth, kstDate, 0, 0, 0));
+    // const kstEnd = new Date(
+    //   Date.UTC(kstYear, kstMonth, kstDate, 23, 59, 59, 999)
+    // );
+    const utcStart = new Date(
+      Date.UTC(kstYear, kstMonth, kstDate, 0, 0, 0) - 9 * 60 * 60 * 1000
     );
-    const kstEndOfDay = new Date(
-      kstNow.getFullYear(),
-      kstNow.getMonth(),
-      kstNow.getDate(),
-      23,
-      59,
-      59,
-      999
+    const utcEnd = new Date(
+      Date.UTC(kstYear, kstMonth, kstDate, 23, 59, 59, 999) - 9 * 60 * 60 * 1000
     );
-    const utcStart = new Date(kstStartOfDay.getTime() - 9 * 60 * 60 * 1000);
-    const utcEnd = new Date(kstEndOfDay.getTime() - 9 * 60 * 60 * 1000);
-
+    // const kstStartOfDay = new Date(
+    //   kstNow.getFullYear(),
+    //   kstNow.getMonth(),
+    //   kstNow.getDate(),
+    //   0,
+    //   0,
+    //   0
+    // );
+    // const kstEndOfDay = new Date(
+    //   kstNow.getFullYear(),
+    //   kstNow.getMonth(),
+    //   kstNow.getDate(),
+    //   23,
+    //   59,
+    //   59,
+    //   999
+    // );
+    // const utcStart = new Date(kstStartOfDay.getTime() - 9 * 60 * 60 * 1000);
+    // const utcEnd = new Date(kstEndOfDay.getTime() - 9 * 60 * 60 * 1000);
+    console.log("조회되는 utc시간 ::", new Date(), utcStart, utcEnd);
     return await this.prisma.reviewInstance.findMany({
       where: {
         scheduledDate: {
@@ -438,7 +451,7 @@ export class PostRepository {
           lte: utcEnd,
         },
         userId: userId,
-        status: ReviewStatus.PENDING,
+        // status: ReviewStatus.PENDING,
       },
       include: {
         post: {

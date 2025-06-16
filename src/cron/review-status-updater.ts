@@ -7,16 +7,22 @@ export function registerReviewStatusCron() {
   cron.schedule(
     "0 0 * * *",
     async () => {
-      const koreaMidnight = new Date(
-        new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" })
+      const now = new Date();
+      const nowKST = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+      const kstYear = nowKST.getFullYear();
+      const kstMonth = nowKST.getMonth();
+      const kstDate = nowKST.getDate();
+
+      const kstMidnightUTC = new Date(
+        Date.UTC(kstYear, kstMonth, kstDate, 0, 0, 0) - 9 * 60 * 60 * 1000
       );
-      koreaMidnight.setHours(0, 0, 0, 0);
+      console.log("정확한 KST 자정(UTC 기준):", kstMidnightUTC.toISOString());
 
       const result = await prisma.reviewInstance.updateMany({
         where: {
           status: "PENDING",
           scheduledDate: {
-            lt: koreaMidnight,
+            lt: kstMidnightUTC,
           },
         },
         data: {
