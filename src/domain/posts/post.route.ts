@@ -23,6 +23,7 @@ router.get("/getUserPlanList", authenticate, api("getUserPlanList"));
 router.post("/reviewPlan", authenticate, api("addReviewPlan"));
 router.delete("/reviewPlan", authenticate, api("deleteReviewPlan"));
 router.post("/reviewInstance", authenticate, api("addReviewInstance"));
+router.delete("/reviewInstance", authenticate, api("removeReviewInstance"));
 router.put("/reviewSuccess", authenticate, api("reviewSuccess"));
 // 4. 게시글 단건 조회
 router.get("/:id", tokenSetting, api("getPost"));

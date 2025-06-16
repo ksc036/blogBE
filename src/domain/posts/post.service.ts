@@ -192,6 +192,9 @@ export class PostService {
   async saveReviewInstance(userId: number, data: saveReviewInstance) {
     return this.postRepository.saveReviewInstance(userId, data);
   }
+  async deleteReviewInstance(userId: number, postId: number) {
+    return this.postRepository.deleteReviewInstance(userId, postId);
+  }
   async reviewSuccess(userId: number, reviewInstanceId: number) {
     return this.postRepository.reviewSuccess(userId, reviewInstanceId);
   }

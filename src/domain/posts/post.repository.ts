@@ -510,6 +510,14 @@ export class PostRepository {
       data: instancesToCreate,
     });
   }
+  async deleteReviewInstance(userId: number, postId: number) {
+    return await this.prisma.reviewInstance.deleteMany({
+      where: {
+        postId: postId,
+        userId,
+      },
+    });
+  }
   async reviewSuccess(userId: number, reviewInstanceId: number) {
     return await this.prisma.reviewInstance.update({
       where: {

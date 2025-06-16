@@ -184,6 +184,18 @@ export const postController = (deps: postControllerDependencies) => {
       await postService.saveReviewInstance(userId, data);
       res.status(201).end();
     },
+    removeReviewInstance: async (req: Request, res: Response) => {
+      const userId = (req.tokenPayload as any).id;
+
+      const postId = Number(req.query.postId);
+      if (!req.query.postId || isNaN(postId) || postId <= 0) {
+        return res
+          .status(400)
+          .json({ error: "유효한 postId를 쿼리스트링에 포함해주세요." });
+      }
+      const result = await postService.deleteReviewInstance(userId, postId);
+      res.status(201).json(result);
+    },
     reviewSuccess: async (req: Request, res: Response) => {
       const userId = (req.tokenPayload as any).id;
       console.log("reviewSuccess", req.body);
