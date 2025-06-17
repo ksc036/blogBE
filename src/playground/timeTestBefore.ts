@@ -3,22 +3,16 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function run() {
-  const now = new Date();
-  const nowKST = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-  const kstYear = nowKST.getFullYear();
-  const kstMonth = nowKST.getMonth();
-  const kstDate = nowKST.getDate();
-
-  const kstMidnightUTC = new Date(
-    Date.UTC(kstYear, kstMonth, kstDate, 0, 0, 0) - 9 * 60 * 60 * 1000
+  const koreaMidnight = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" })
   );
-  console.log("정확한 KST 자정(UTC 기준):", kstMidnightUTC.toISOString());
+  koreaMidnight.setHours(0, 0, 0, 0);
 
   const result = await prisma.reviewInstance.updateMany({
     where: {
       status: "PENDING",
       scheduledDate: {
-        lt: kstMidnightUTC,
+        lt: koreaMidnight,
       },
     },
     data: {
@@ -26,7 +20,7 @@ async function run() {
     },
   });
 
-  // console.log(`[Cron] ${result.count}개 리뷰가 'MISSED'로 업데이트됨`);
+  console.log(`[Cron] ${result.count}개 리뷰가 'MISSED'로 업데이트됨`);
 
   console.log("✅ 모든 태그의 canonical 연결 완료");
   process.exit();

@@ -8,6 +8,7 @@ export function registerReviewStatusCron() {
     "0 0 * * *",
     async () => {
       const now = new Date();
+      console.log(`[Cron] 실행시간!!${now}`);
       const nowKST = new Date(now.getTime() + 9 * 60 * 60 * 1000);
       const kstYear = nowKST.getFullYear();
       const kstMonth = nowKST.getMonth();

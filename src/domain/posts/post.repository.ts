@@ -451,7 +451,7 @@ export class PostRepository {
           lte: utcEnd,
         },
         userId: userId,
-        // status: ReviewStatus.PENDING,
+        status: ReviewStatus.PENDING,
       },
       include: {
         post: {
