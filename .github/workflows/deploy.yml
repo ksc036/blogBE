@@ -116,7 +116,7 @@ jobs:
     steps:
       - name: Install Argo CD CLI
         run: |
-          curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+          curl -sSL -o argocd argocd https://github.com/argoproj/argo-cd/releases/download/v2.14.9/argocd-linux-amd64
           chmod +x argocd
           sudo mv argocd /usr/local/bin/
 
@@ -125,6 +125,7 @@ jobs:
           argocd login argocd.ksc036.store \
             --username ${{ secrets.ARGOCD_USERNAME }} \
             --password ${{ secrets.ARGOCD_PASSWORD }} \
+            --grpc-web
       - name: Sync application
         run: |
           echo "ENV_DIR is ${{ needs.gitops-update.outputs.dir }}"
